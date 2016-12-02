@@ -6,7 +6,7 @@ public class Game {
 		// TODO Auto-generated method stub
 		Deck.Rank queen = Deck.Rank.QUEEN;
 		Deck.Rank deuce = Deck.Rank.DEUCE;
-		///System.out.println("" + (queen.compareTo(Deck.Rank.KING)));
+		System.out.println("" + (queen.compareTo(Deck.Rank.KING)));
 		//newGame();
 
 	}
