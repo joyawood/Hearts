@@ -1,38 +1,32 @@
 import java.util.Comparator;
 
-public class Card  {
-	Deck.Rank rank;
-	Deck.Suit suit;
+public class Card implements Comparable<Card> {
+	int rank;
+	int suit;
+	String[] suitName = {"Hearts", "Diamonds", "Clubs", "Spades"};
+	String[] rankName = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
 
-	public Card(Deck.Rank rank, Deck.Suit suit){
+	public Card(int rank, int suit){
 		this.rank = rank;
 		this.suit = suit;
 	}
 
 	public String toString() {
-		return String.format("%s of %s", rank, suit);
+		return String.format("%s of %s", rankName[this.rank], suitName[this.suit]);
+	}
+	public int compareTo(Card o) {
+		// TODO Auto-generated method stub
+		if(this.rank > o.rank){
+			return 1;
+		}
+		if (this.rank<o.rank){
+			return -1;
+		}
+		return 0;
 	}
 
+
+
 	
-	public static Comparator<Card> compByRank()
-	{   
-	 Comparator comp = new Comparator<Card>(){
-		 
-	     public int compare(Card o, Card o1) {
-	 			System.out.println("arg");
-
-	 		if(o1.suit.compareTo(o.suit) == 0){
-	 			System.out.println(o1.toString()+ o1.rank.compareTo(o.rank) + o.toString());
-	 			return o1.rank.compareTo(o.rank);
-	 		}
-	 		else{
-	 			System.out.println("different suits");
-	 			return 0;
-	 		}
-	 	}
-
-		    
-	 };
-	 return comp;
-	} 
+	
 }
