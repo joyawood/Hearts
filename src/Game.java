@@ -76,8 +76,17 @@ public class Game {
 				if(current.suit == winningCard.suit && current.rank > winningCard.rank){
 					winningCard = current;
 					startingPlayer = order; //this player starts next round (curr. winner)
-				}	
+				}
+				if(current.suit != winningCard.suit){
+					for(int i = 0; i <4; i ++){
+						players[i].knowledge.suiteVoid(order%4, winningCard);
+					}
+				}
 				System.out.println("Player "+(order%4) + " played " + current.toString());
+				for(int i = 0; i < 4; i ++){
+					//add played card to knowledgebase
+					players[i].knowledge.update(current);
+				}
 
 			}
 			startingPlayer = startingPlayer%4;

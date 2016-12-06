@@ -4,7 +4,7 @@ import java.util.Collections;
 public class Player {
 	int points;
 	ArrayList<Card>[] hand = new ArrayList[4];
-	// KnowledgeBase knowledge;
+	KnowledgeBase knowledge = new KnowledgeBase();
 
 	public Player() {
 		for (int i = 0; i < 4; i++) {
@@ -14,6 +14,7 @@ public class Player {
 
 	public void add(Card card) {
 		hand[card.suit].add(card);
+		knowledge.update(card);
 	}
 
 	public Card pop(int rank, int suit) {
