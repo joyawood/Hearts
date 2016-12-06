@@ -64,19 +64,11 @@ public class IntelligentPlayer extends Player{
 	private Card safeLead(ArrayList<Card> currentTrick, int round, boolean broken) {
 		Card choice = null;
 		
-		for(int player = 0; player < 4; player++){
-			for(int suit = 0; suit < 4; suit++)
-				suitVoid(player, suit);
-		}
+		//play card from least common suit
 		
-		
-
-		switch(round){
+		if(broken){
+			//find least common suit
 			
-		  
-			case 13:
-				// get last card
-				break;
 		}
 		
 		choice = followTest(currentTrick, round, broken);
