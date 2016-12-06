@@ -6,7 +6,8 @@ public class Game {
 
 	public Game() {
 		// TODO Auto-generated method stub
-		for(int i = 0; i < 4; i ++){
+		players[0] = new IntelligentPlayer();
+		for(int i = 1; i < 4; i ++){
 			players[i] = new Player();
 		}
 		
