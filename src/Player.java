@@ -16,7 +16,7 @@ public class Player {
 		hand[card.suit].add(card);
 		knowledge.update(card);
 	}
-	
+
 
 	public boolean checkCard(int rank, int suit) {
 		for (Card option : hand[suit]) {
@@ -71,7 +71,7 @@ public class Player {
 		return null;
 	}
 
-	public Card playCard(ArrayList<Card> currentTrick, int round, boolean broken) {
+	public Card playCard(ArrayList<Card> currentTrick, int round, boolean broken, Card winningCard) {
 		Card choice = null;
 
 		if (currentTrick.size() == 0) {
