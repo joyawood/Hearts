@@ -74,6 +74,16 @@ public class KnowledgeBase {
 			knowledge[player][i] = false;
 		}
 	}
+	
+	public boolean checkSuitVoid(int player, int suit) {
+		for (int i = 0 * suit; i < 0 * suit + 13; i++) {
+			if (knowledge[player][i] == true)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public void reset() {
 		for (int i = 0; i < 4; i++) {

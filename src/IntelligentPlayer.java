@@ -25,7 +25,7 @@ public class IntelligentPlayer extends Player {
 		if (round == 0) {
 			// this is a really specific situation
 		} else {
-			switch (suit) {
+			switch (leadSuit) {
 			case 0:
 				if (isVoid(0)) {
 					// QT or !Q
@@ -61,7 +61,7 @@ public class IntelligentPlayer extends Player {
 					// points, high void
 
 				} else {
-					if (queen()) {
+					if (knowledge.queen()) {
 						if (checkCard(12, 3)) {
 							// YQ
 						} else {
@@ -84,9 +84,56 @@ public class IntelligentPlayer extends Player {
 		return null;
 	}
 
-	private Card duckOrWin(ArrayList<Card> currentTrick, int round, boolean broken, Card winningCard) {
-		// TODO Auto-generated method stub
-		return null;
+	private Card duckOrWin(ArrayList<Card> currentTrick, int round, boolean broken, Card winningCard, int currentPlayerNum) {
+		int winningSuit = winningCard.suit;
+		Card choice = null;
+		if(hand[winningSuit].size()>0){
+			if(hand[winningSuit].get(0).rank > winningCard.rank){
+				//can't duck
+				switch(currentTrick.size()){
+					case 3:
+						//win high;
+						choice = hand[winningSuit].get(hand[winningSuit].size()-1);
+						break;
+					case 2 : //& 1:
+						//if next player void,  win high
+						if(knowledge.checkSuitVoid(((currentPlayerNum+1)%4), winningSuit)){
+							choice = hand[winningSuit].get(hand[winningSuit].size()-1);
+						}
+						else{
+							choice = hand[winningSuit].get(0);//win low
+						}
+						break;
+					case 1:
+						if(knowledge.checkSuitVoid(((currentPlayerNum+1)%4), winningSuit)){
+							if(knowledge.checkSuitVoid(((currentPlayerNum+2)%4), winningSuit)){
+								choice = hand[winningSuit].get(hand[winningSuit].size()-1);//win high
+							}
+							else{
+								choice = hand[winningSuit].get(hand[winningSuit].size()/2);//play mid
+							}
+						}
+						else{
+							//go low
+							choice = hand[winningSuit].get(0);//win low
+						}
+
+						break;
+					
+				}
+			}
+			else{
+				//can duck
+				choice = hand[winningSuit].get(0);
+				for(Card current: hand[winningSuit]){
+					if(current.rank>choice.rank && current.rank < winningCard.rank){
+						choice = current;
+					}
+				}
+			}
+		}
+		
+		return choice;
 	}
 
 	private Card lead(ArrayList<Card> currentTrick, int round, boolean broken) {

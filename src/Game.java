@@ -80,7 +80,7 @@ public class Game {
 				}
 				if(current.suit != winningCard.suit){
 					for(int i = 0; i <4; i ++){
-						players[i].knowledge.suiteVoid(order%4, winningCard);
+						players[i].knowledge.suitVoid(order%4, winningCard);
 					}
 				}
 				System.out.println("Player "+(order%4) + " played " + current.toString());
