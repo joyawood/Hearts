@@ -68,7 +68,7 @@ public class State {
 				}
 			}
 		}
-		return winningPlayerIndex;
+		return winningPlayerIndex%4;
 	}
 	
 	public int getLeadingSuit(){

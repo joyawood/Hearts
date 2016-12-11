@@ -24,6 +24,10 @@ public class Card implements Comparable<Card> {
 		}
 		return 0;
 	}
+	
+	public boolean equals(Card card){
+		return this.rank == card.rank && this.suit == card.suit;
+	}
 
 
 

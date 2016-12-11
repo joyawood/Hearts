@@ -91,9 +91,10 @@ public class Game1 {
 		while(play){
 			//setup and play new round
 			playRound();
+			counter++;
+
 			//check that no players have more than 100 points
 			for(int i = 0; i < 4; i ++){
-				counter++;
 				//if player exceeds 100:
 				if(players[i].points >= 100){
 					//end game
