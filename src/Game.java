@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class Game1 {
+public class Game {
 	static Player[] players = new Player[4];
-	Deck1 deck;
+	Deck deck;
 	boolean heartsBroken = false;
 	boolean twoOfClubs = false;
 
-	public Game1() {
-		players[0] = new RandomPlayer1();
-		players[1] = new RandomPlayer1();
+	public Game() {
+		players[0] = new RandomPlayer();
+		players[1] = new RandomPlayer();
 		players[2] = new NaivePlayer();
-		players[3] = new RandomPlayer1();
-		this.deck = new Deck1();
+		players[3] = new RandomPlayer();
+		this.deck = new Deck();
 	}
 
 	public void playRound() {
@@ -26,7 +26,6 @@ public class Game1 {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
-			System.out.println("trick: " + trick);
 
 			// create new state
 			ArrayList<Card> cardsInTrick = new ArrayList<Card>();
@@ -40,17 +39,12 @@ public class Game1 {
 				Card choice = players[currentPlayer].playCard(currentState);
 				currentState.update(choice, currentPlayer);
 
-				System.out.println("Player " + currentPlayer + " played " + choice.toString());
-
 			}
 			// all cards in trick have been played
 			// set starting player to be the player who just won the round
 			startingPlayer = currentState.winningPlayer();
 			// update points for starting player (who just won last round)
 			players[startingPlayer].points += currentState.points;
-
-//			System.out.println("Player " + startingPlayer + " won " + currentState.points + " points");
-//			System.out.println("");
 			updateGame(currentState);
 		}
 
@@ -62,8 +56,7 @@ public class Game1 {
 		twoOfClubs = currentState.twoOfClubs;
 
 		// takes in deck of last current state, makes copy and updates master
-		// deck
-		deck = new Deck1(currentState.deck);
+		deck = new Deck(currentState.deck);
 	}
 
 	private void setupRound() {
@@ -73,20 +66,19 @@ public class Game1 {
 		// resets game state booleans
 		heartsBroken = false;
 		twoOfClubs = false;
-		// puts all cards in not played, clears played, shuffles deck (?)
+		// puts all cards in not played, clears played, shuffles deck
 		deck.reset();
 		// deals cards to players
 		deck.deal(players);
 		// sorts player hands
 		for (Player current : players) {
 			current.sort();
-			// current.printHand();
 		}
 
 	}
 
 	public int[] playGame() {
-		//returns each player's score in int array
+		//returns each player's final score in array
 		boolean play = true;
 		int[] scores = new int[4];
 
@@ -107,8 +99,9 @@ public class Game1 {
 					play = false;
 				}
 			}
-			printRound(counter);
+			//printRound(counter);
 		}
+		//populate score array
 		for (int i = 0; i < 4; i++) {
 			scores[i] = players[i].points;
 		}

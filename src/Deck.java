@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
-public class Deck1 {
+public class Deck {
 	Card[] cards = new Card[52];
 	int length = 52;
 	ArrayList<Card> played;
 	ArrayList<Card> notPlayed;
 
 
-	public Deck1() {
+	public Deck() {
 		newDeck();
 		shuffle();
 		played = new ArrayList<Card>();
@@ -18,7 +18,7 @@ public class Deck1 {
 		}
 	}
 	
-	public Deck1(Deck1 toCopy) {
+	public Deck(Deck toCopy) {
 		//makes a deep copy of the passed in deck object
 		newDeck();
 		played = new ArrayList<Card>();

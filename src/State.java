@@ -8,17 +8,17 @@ public class State {
 	Card winningCard = new Card(2,2);
 	int currentWinner;
 	
-	Deck1 deck;
+	Deck deck;
 	boolean heartsBroken = false;
 	boolean twoOfClubs = false;
 	ArrayList<Card> cardsInTrick;
 	
-	public State(Deck1 deck, boolean heartsBroken, boolean twoOfClubs, ArrayList<Card> cardsInTrick, int currentPlayer){
+	public State(Deck deck, boolean heartsBroken, boolean twoOfClubs, ArrayList<Card> cardsInTrick, int currentPlayer){
 		this.currentPlayer = currentPlayer;
 		this.startingPlayer = currentPlayer;
 		this.currentWinner = currentPlayer;
 		this.points = 0;
-		this.deck = new Deck1(deck);
+		this.deck = new Deck(deck);
 		this.heartsBroken = heartsBroken;
 		this.twoOfClubs = twoOfClubs;
 		this.cardsInTrick = new ArrayList<Card>(cardsInTrick);
@@ -29,7 +29,7 @@ public class State {
 		this.currentPlayer = stateToCopy.currentPlayer;
 		this.currentWinner = stateToCopy.currentWinner;
 		this.startingPlayer = stateToCopy.startingPlayer;
-		this.deck = new Deck1(stateToCopy.deck);
+		this.deck = new Deck(stateToCopy.deck);
 		this.heartsBroken = stateToCopy.heartsBroken;
 		this.twoOfClubs = stateToCopy.twoOfClubs;
 		this.cardsInTrick = new ArrayList<Card>(stateToCopy.cardsInTrick);

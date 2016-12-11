@@ -16,7 +16,6 @@ public class NaivePlayer extends Player{
 			//if we are leading
 			if(hasOnlyHearts()){
 				//only hearts - lowest heart
-				printHand();
 				choice = hand[0].get(0);
 			}
 			else{
@@ -62,8 +61,6 @@ public class NaivePlayer extends Player{
 		Card lowest = new Card(52, 0);
 		for(int i = hand.length-1; i > 0; i --){
 			for(Card card: hand[i]){
-				System.out.println(card.toString());
-
 				if(card.rank < lowest.rank){
 					lowest = card;
 				}

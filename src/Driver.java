@@ -1,14 +1,13 @@
 
-public class Driver1 {
+public class Driver {
 	static Player[] players = new Player[4];
-	static Deck1 deck;
+	static Deck deck;
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		int[] scores = new int[4];
 		
 		for(int a = 0; a <10; a++){
-			Game1 game = new Game1();
+			Game game = new Game();
 			int[] currentScores = game.playGame();
 			for(int i = 0; i < 4; i ++){
 				scores[i]+=currentScores[i];

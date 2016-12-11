@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class RandomPlayer1 extends Player{
+public class RandomPlayer extends Player{
 	Random rand = new Random();
 
 	public Card playCard(State currentState) {
