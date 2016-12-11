@@ -6,42 +6,40 @@ public class Deck {
 	ArrayList<Card> played;
 	ArrayList<Card> notPlayed;
 
-
 	public Deck() {
 		newDeck();
 		shuffle();
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
 
-		for(Card current: cards){
+		for (Card current : cards) {
 			notPlayed.add(current);
 		}
 	}
-	
+
 	public Deck(Deck toCopy) {
-		//makes a deep copy of the passed in deck object
+		// makes a deep copy of the passed in deck object
 		newDeck();
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
-		
-		for(Card card: toCopy.played){
+
+		for (Card card : toCopy.played) {
 			played.add(card);
 		}
-		for(Card card: toCopy.notPlayed){
+		for (Card card : toCopy.notPlayed) {
 			notPlayed.add(card);
 		}
-		
 
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		played.clear();
-		for(Card current: cards){
+		for (Card current : cards) {
 			notPlayed.add(current);
 		}
 		shuffle();
 	}
-	
+
 	public void newDeck() {
 		int index = 0;
 		for (int i = 0; i < 4; i++) {
@@ -61,26 +59,26 @@ public class Deck {
 			cards[rand] = temp;
 		}
 	}
-	
-	public void updatePlayed(Card current){
-		 for(Card card:notPlayed){
-			 if(card.equals(current)){
-				 notPlayed.remove(card);
-				 played.add(card);
-				 break;
-			 }
-		 }
+
+	public void updatePlayed(Card current) {
+		for (Card card : notPlayed) {
+			if (card.equals(current)) {
+				notPlayed.remove(card);
+				played.add(card);
+				break;
+			}
+		}
 	}
 
 	public void deal(Player[] players) {
 		int cardIndex = 0;
-	
-		for(int i = 0; i < 13; i++){
-			for(Player current: players){
+
+		for (int i = 0; i < 13; i++) {
+			for (Player current : players) {
 				current.add(cards[cardIndex]);
 				cardIndex++;
 			}
 		}
 	}
-	
+
 }

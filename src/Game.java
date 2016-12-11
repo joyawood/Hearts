@@ -30,7 +30,7 @@ public class Game {
 			// create new state
 			ArrayList<Card> cardsInTrick = new ArrayList<Card>();
 			State currentState = new State(deck, heartsBroken, twoOfClubs, cardsInTrick, startingPlayer);
-			
+
 			// go through each of the 4 players and have them play card
 			for (int player = startingPlayer; player < startingPlayer + 4; player++) {
 				// get index of current player
@@ -78,7 +78,7 @@ public class Game {
 	}
 
 	public int[] playGame() {
-		//returns each player's final score in array
+		// returns each player's final score in array
 		boolean play = true;
 		int[] scores = new int[4];
 
@@ -99,9 +99,9 @@ public class Game {
 					play = false;
 				}
 			}
-			//printRound(counter);
+			// printRound(counter);
 		}
-		//populate score array
+		// populate score array
 		for (int i = 0; i < 4; i++) {
 			scores[i] = players[i].points;
 		}

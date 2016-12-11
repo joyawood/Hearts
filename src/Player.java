@@ -6,34 +6,37 @@ public class Player {
 	ArrayList<Card>[] hand = new ArrayList[4];
 
 	public Player() {
-		//initialize empty hand
+		// initialize empty hand
 		for (int i = 0; i < 4; i++) {
 			hand[i] = new ArrayList<Card>();
 		}
 	}
 
 	public void add(Card card) {
-		//add card to hand by suit
+		// add card to hand by suit
 		hand[card.suit].add(card);
 	}
-	
+
 	public void remove(Card card) {
-		//remove card from hand
-		for(Card current : hand[card.suit]){
-			if(current.rank == card.rank){
+		// remove card from hand
+		for (Card current : hand[card.suit]) {
+			if (current.rank == card.rank) {
 				hand[card.suit].remove(current);
 				break;
-			};
-		};
+			}
+			;
+		}
+		;
 	}
 
 	public void clearHand() {
-		//delete hand
-		for (int i = 0; i < 4; i++) hand[i].clear();
+		// delete hand
+		for (int i = 0; i < 4; i++)
+			hand[i].clear();
 	}
 
 	public boolean hasTwoOfClubs() {
-		//returns true if player has 2 of clubs; if going first
+		// returns true if player has 2 of clubs; if going first
 		for (Card club : hand[2]) {
 			if (club.rank == 2) {
 				return true;
@@ -43,10 +46,10 @@ public class Player {
 	}
 
 	public boolean hasQueen() {
-		//returns true if card in hand
+		// returns true if card in hand
 		int rank = 12;
 		int suit = 3;
-		
+
 		for (Card option : hand[suit]) {
 			if (option.rank == rank) {
 				return true;
@@ -56,7 +59,7 @@ public class Player {
 	}
 
 	public boolean isVoid(int suit) {
-		//checks if players is void in given suit
+		// checks if players is void in given suit
 		return hand[suit].size() == 0;
 	}
 
@@ -65,14 +68,14 @@ public class Player {
 	}
 
 	public void sort() {
-		//sorts hand by sorting individual suit arraylists
+		// sorts hand by sorting individual suit arraylists
 		for (ArrayList<Card> suit : hand) {
 			Collections.sort(suit);
 		}
 	}
 
 	public void printHand() {
-		//for debugging
+		// for debugging
 		for (ArrayList<Card> suit : hand) {
 			for (Object card : suit) {
 				System.out.println(card.toString());
@@ -80,15 +83,13 @@ public class Player {
 		}
 	}
 
-	public boolean hasOnlyHearts(){
-		for(int i = 1; i < 4; i++){
-			if(hand[i].size() > 0){
+	public boolean hasOnlyHearts() {
+		for (int i = 1; i < 4; i++) {
+			if (hand[i].size() > 0) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-
-	
 }
