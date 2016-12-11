@@ -2,12 +2,12 @@ import java.util.Random;
 
 public class RandomPlayer1 extends Player{
 	Random rand = new Random();
-	
+
 	public Card playCard(State currentState) {
-		
+
 		Card choice = null;
 		int leadingSuit = currentState.getLeadingSuit();
-		
+
 		if(currentState.twoOfClubs == false){
 			//first move, play two of clubs
 			currentState.twoOfClubs = true;
@@ -28,12 +28,12 @@ public class RandomPlayer1 extends Player{
 		remove(choice);
 		return choice;
 	}
-	
+
 	public Card playRandomCard(boolean heartBroken){
 		Card choice = null;
-		
+
 		//if hearts is broken
-		if(heartBroken){
+		if(heartsBroken){
 			boolean valid = false;
 			int randSuit = 0;
 			//while suit selected has cards
@@ -49,7 +49,7 @@ public class RandomPlayer1 extends Player{
 			choice = hand[randSuit].get(randCard);
 		}else{
 			//if hearts is not broken
-			
+
 			//if has only hearts, play hearts
 			if(hasOnlyHearts()){
 				int randCard = rand.nextInt(hand[0].size());
@@ -69,10 +69,10 @@ public class RandomPlayer1 extends Player{
 				int randCard = rand.nextInt(hand[randSuit].size());
 				choice = hand[randSuit].get(randCard);
 			}
-	
+
 		}
 
 		return choice;
 	}
-	
+
 }
