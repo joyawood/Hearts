@@ -16,7 +16,6 @@ public class Card implements Comparable<Card> {
 	}
 
 	public int compareTo(Card o) {
-		// TODO Auto-generated method stub
 		if (this.rank > o.rank) {
 			return 1;
 		}

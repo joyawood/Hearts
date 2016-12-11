@@ -23,10 +23,8 @@ public class Player {
 			if (current.rank == card.rank) {
 				hand[card.suit].remove(current);
 				break;
-			}
-			;
+			}	
 		}
-		;
 	}
 
 	public void clearHand() {
