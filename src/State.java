@@ -4,14 +4,19 @@ public class State {
 	int currentPlayer;
 	int startingPlayer;
 	int points;
+	
+	Card winningCard = new Card(2,2);
+	int currentWinner;
+	
 	Deck1 deck;
 	boolean heartsBroken = false;
-	boolean twoOfClubs = false;//?
+	boolean twoOfClubs = false;
 	ArrayList<Card> cardsInTrick;
 	
 	public State(Deck1 deck, boolean heartsBroken, boolean twoOfClubs, ArrayList<Card> cardsInTrick, int currentPlayer){
 		this.currentPlayer = currentPlayer;
 		this.startingPlayer = currentPlayer;
+		this.currentWinner = currentPlayer;
 		this.points = 0;
 		this.deck = new Deck1(deck);
 		this.heartsBroken = heartsBroken;
@@ -22,6 +27,7 @@ public class State {
 	public State(State stateToCopy){
 		this.points = stateToCopy.points;
 		this.currentPlayer = stateToCopy.currentPlayer;
+		this.currentWinner = stateToCopy.currentWinner;
 		this.startingPlayer = stateToCopy.startingPlayer;
 		this.deck = new Deck1(stateToCopy.deck);
 		this.heartsBroken = stateToCopy.heartsBroken;
@@ -29,9 +35,28 @@ public class State {
 		this.cardsInTrick = new ArrayList<Card>(stateToCopy.cardsInTrick);
 	}
 	
-	public void update(Card played){
+	public void update(Card played, int currentPlayer){
+		//update winning card and winning player
+		if(cardsInTrick.size()>0){
+			if(played.suit == winningCard.suit){
+				if(played.rank > winningCard.rank){
+					//update leading card if in suit and greater than leading card
+					winningCard = played;
+					//keep track of index of player who is winning
+					currentWinner = currentPlayer; 
+				}
+			}
+		}
+		else{
+			winningCard = played;
+			//keep track of index of player who is winning
+			currentWinner = currentPlayer; 
+		}
+		
+		
 		//update current player to next player
-		this.currentPlayer = (currentPlayer+1)%4;
+		this.currentPlayer = currentPlayer;
+		
 		//add card played to trick
 		this.cardsInTrick.add(played);
 		//update our copy of the deck to reflect the change
@@ -50,25 +75,10 @@ public class State {
 			this.twoOfClubs = true;
 
 		}
+	
 	}
 	public int winningPlayer(){
-		// get suit and rank of first card added to trick (therefore the leading card)
-		Card leadingCard = cardsInTrick.get(0);
-		int winningPlayerIndex = 0;
-	
-		//iterate through all cards in trick
-		for(int i = 0; i < cardsInTrick.size(); i++){
-			Card curr = cardsInTrick.get(i);
-			if(curr.suit == leadingCard.suit){
-				if(curr.rank > leadingCard.rank){
-					//update leading card if in suit and greater than leading card
-					leadingCard = curr;
-					//keep track of index of player who is winning
-					winningPlayerIndex = (startingPlayer + i)  % 4; 
-				}
-			}
-		}
-		return winningPlayerIndex%4;
+		return currentWinner;
 	}
 	
 	public int getLeadingSuit(){

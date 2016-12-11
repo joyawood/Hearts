@@ -42,10 +42,10 @@ public class Player {
 		return false;
 	}
 
-	public boolean checkCard(Card card) {
-		//returns true is card in hand
-		int rank = card.rank;
-		int suit = card.suit;
+	public boolean hasQueen() {
+		//returns true if card in hand
+		int rank = 12;
+		int suit = 3;
 		
 		for (Card option : hand[suit]) {
 			if (option.rank == rank) {
@@ -81,12 +81,14 @@ public class Player {
 	}
 
 	public boolean hasOnlyHearts(){
-		for(int i = 1; i < 3; i++){
+		for(int i = 1; i < 4; i++){
 			if(hand[i].size() > 0){
 				return false;
 			}
 		}
 		return true;
 	}
+
+
 	
 }

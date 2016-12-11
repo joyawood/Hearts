@@ -30,11 +30,10 @@ public class RandomPlayer1 extends Player{
 	}
 
 	public Card playRandomCard(boolean heartBroken){
-//		System.out.println("Hearts broken: "+heartBroken);
 		Card choice = null;
 
 		//if hearts is broken
-		if(heartsBroken){
+		if(heartBroken){
 			boolean valid = false;
 			int randSuit = 0;
 			//while suit selected has cards
