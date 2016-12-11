@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Game {
 	Player[] players = new Player[4];
-	Deck deck;
+	Deck1 deck;
 	int[] points = new int[4];
 
 	public Game() {
@@ -12,7 +12,7 @@ public class Game {
 			players[i] = new Player();
 		}
 
-		deck = new Deck();
+		deck = new Deck1();
 		boolean play = true;
 		int counter = 0;
 		while(play){
@@ -46,7 +46,8 @@ public class Game {
 		boolean heartsBroken = false;
 		deck.shuffle();
 		//deal deals deck and returns index of player with 2 of clubs
-		int startingPlayer = deck.deal(players);
+		int startingPlayer = 0;
+		deck.deal(players);
 
 		for(int trick = 0; trick < 13; trick ++){
 			System.out.println("Starting trick "+trick + " starting player " + startingPlayer);
