@@ -32,7 +32,7 @@ public class IntelligentPlayer extends Player {
 						// if (queen()) {
 				} else {
 					// canDuck? if yes, duck. if no, win high
-					choice = duckOrWin(currentTrick, round, broken, winningCard);
+					choice = duckOrWin(currentTrick, round, broken, winningCard, 0);//GO HERE FIX ME
 				}
 				break;
 

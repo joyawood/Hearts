@@ -94,15 +94,15 @@ public class Player {
 					}
 				}
 				// choose card from smallest suit
-				choice = hand[indexMin].get(hand[indexMin].size() - 1);
+				choice = hand[indexMin].get(0);
 			}
 		} else {
 			int suit = currentTrick.get(0).suit;
 
 			if (hand[suit].size() > 0) {
 				// we have card in suit
-				choice = hand[suit].get(hand[suit].size() - 1);// highest in
-																// suit
+				choice = hand[suit].get(0);// lowest in suit
+															
 
 			} else {
 				// void in suit
@@ -111,7 +111,7 @@ public class Player {
 					// no Q of S
 					if (hand[0].size() > 0) {
 						// play heart
-						choice = hand[0].get(hand[0].size() - 1);// highest
+						choice = hand[0].get(0);// lowest
 																	// heart
 					} else {
 						// else highest card of smallest suit
@@ -125,7 +125,7 @@ public class Player {
 							}
 						}
 						// choose card from smallest suit
-						choice = hand[indexMin].get(hand[indexMin].size() - 1);
+						choice = hand[indexMin].get(0);
 					}
 				} else {
 					return choice;

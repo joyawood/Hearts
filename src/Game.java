@@ -3,10 +3,11 @@ import java.util.ArrayList;
 public class Game {
 	Player[] players = new Player[4];
 	Deck deck;
+	int[] points = new int[4];
 
 	public Game() {
 		// TODO Auto-generated method stub
-		players[0] = new IntelligentPlayer();
+		players[0] = new RandomPlayer();
 		for(int i = 1; i < 4; i ++){
 			players[i] = new Player();
 		}
@@ -32,9 +33,11 @@ public class Game {
 
 		}
 
-		System.out.println("Game over!");
-
-
+		//System.out.println("Game over!");
+		points[0] = players[0].points;
+		points[1] = players[1].points;
+		points[2] = players[2].points;
+		points[3] = players[3].points;
 
 	}
 
