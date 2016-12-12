@@ -3,6 +3,10 @@ import java.util.Random;
 public class NaivePlayer extends Player {
 	Random rand = new Random();
 
+	public NaivePlayer(int ID) {
+		super(ID);
+	}
+
 	public Card playCard(State currentState) {
 		Card choice = null;
 		int leadingSuit = currentState.getLeadingSuit();

@@ -4,12 +4,14 @@ import java.util.Collections;
 public class Player {
 	int points;
 	ArrayList<Card>[] hand = new ArrayList[4];
+	int playerID;
 
-	public Player() {
+	public Player(int ID) {
 		// initialize empty hand
 		for (int i = 0; i < 4; i++) {
 			hand[i] = new ArrayList<Card>();
 		}
+		playerID = ID;
 	}
 
 	public void add(Card card) {

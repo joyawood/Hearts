@@ -36,6 +36,11 @@ public class State {
 	}
 
 	public void update(Card played, int currentPlayer) {
+		/*
+		 * this function updates the deck to keep track of played card,
+		 * and it updates the winning card and player in state,
+		 * also updates flags
+		 */
 		// update winning card and winning player
 		if (cardsInTrick.size() > 0) {
 			if (played.suit == winningCard.suit) {
