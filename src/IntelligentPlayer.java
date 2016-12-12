@@ -3,18 +3,10 @@ import java.util.Random;
 
 public class IntelligentPlayer extends Player {
 	Random rand = new Random();
-	ArrayList<Card>[] copyHand = new ArrayList[4];
 
 	public IntelligentPlayer(int ID) {
 		super(ID);
-		// initialize empty hand
-		for (int i = 0; i < 4; i++) {
-			hand[i] = new ArrayList<Card>();
-		}
-		// initialize copied hand - to pass in playouts
-		for (int i = 0; i < 4; i++) {
-			copyHand[i] = new ArrayList<Card>();
-		}
+	
 	}
 
 	public Card playCard(State currentState) {
@@ -23,7 +15,7 @@ public class IntelligentPlayer extends Player {
 		int leadingSuit = currentState.getLeadingSuit();
 
 		// first - copy hand
-		copyHand(hand);
+		ArrayList<Card>[] currentHand = copyHand(hand);
 		// second - loop through valid options in your hand and play out game
 
 		// if first round:
@@ -31,14 +23,14 @@ public class IntelligentPlayer extends Player {
 			// first move, play two of clubs
 			currentState.twoOfClubs = true;
 			choice = new Card(2, 2);
-		} else if (leadingSuit == -1 || isVoidCopy(leadingSuit)) {
+		} else if (leadingSuit == -1 || isVoidCopy(leadingSuit, currentHand)) {
 			// if you're leading or void
 			if (currentState.heartsBroken) {
 				// if hearts broken
 				// run through all cards - consider all cards
 				for (int suit = 0; suit < 4; suit++) {
 					for (Card valid : hand[suit]) {
-						int score = playout(valid, currentState);
+						int score = playout(valid, currentState, currentHand);
 						if (score < bestScore) {
 							choice = valid;
 						}
@@ -49,7 +41,7 @@ public class IntelligentPlayer extends Player {
 				// run through all valid cards - consider 1-3
 				for (int suit = 1; suit < 4; suit++) {
 					for (Card valid : hand[suit]) {
-						int score = playout(valid, currentState);
+						int score = playout(valid, currentState, currentHand);
 						if (score < bestScore) {
 							choice = valid;
 						}
@@ -62,19 +54,30 @@ public class IntelligentPlayer extends Player {
 			// run through all valid cards - consider leading suit
 			for (Card valid : hand[leadingSuit]) {
 				System.out.println("not leading, not void");
-				int score = playout(valid, currentState);				
+				int score = playout(valid, currentState, currentHand);				
 				if (score < bestScore) {
 					choice = valid;
 				}
 			}
 		}
 		remove(choice);
+		setHand(currentHand);
 		System.out.println(choice.toString());
 		return choice;
 	}
 
 	
-	private int playout(Card choice, State prevState, ArrayList<Card>[] currentHand) {
+	private void setHand(ArrayList<Card>[] currentHand) {
+		for(int suit = 0; suit <4; suit++){
+			hand[suit].clear();
+			for(Card card: currentHand[suit]){
+				hand[suit].add(card);
+			}
+		}
+		
+	}
+
+	private int playout(Card choice, State prevState, ArrayList<Card>[] prevHand) {
 		// keep track of points
 		int points = 0;
 		
@@ -85,12 +88,12 @@ public class IntelligentPlayer extends Player {
 		currentState.update(choice, prevState.currentPlayer);// off by one maybe
 
 		// make safe copy of hand
-		copyHand(copyHand);
+		ArrayList<Card>[] currentHand = copyHand(prevHand);
 //		printCopyHand();
 		
 
 		// update hand
-		removeFromCopy(choice);
+		removeFromCopy(choice, currentHand);
 
 		// pointer to current deck
 		Deck deck = currentState.deck;
@@ -98,7 +101,7 @@ public class IntelligentPlayer extends Player {
 
 		// finish trick
 		for (int i = currentState.cardsInTrick.size() - 1; i < 4; i++) {
-			Card opponentChoice = playRandomCard(deck);
+			Card opponentChoice = playRandomCard(deck, currentHand);
 			currentPlayer = (currentPlayer + 1) % 4;
 			currentState.update(choice, currentPlayer);
 		}
@@ -130,7 +133,7 @@ public class IntelligentPlayer extends Player {
 						newChoice = playCard(newState);
 					} else {
 						// simulate an opponents move
-						newChoice = playRandomCard(deck);
+						newChoice = playRandomCard(deck, currentHand);
 					}
 					newCurrentPlayer = (newCurrentPlayer + 1) % 4;
 					newState.update(newChoice, newCurrentPlayer);
@@ -151,7 +154,7 @@ public class IntelligentPlayer extends Player {
 		return points;
 	}
 
-	private Card playRandomCard(Deck currentDeck) {
+	private Card playRandomCard(Deck currentDeck, ArrayList<Card>[] currentHand) {
 		/*
 		 * Method to return a random unplayed card that is not in the
 		 * IntelligentPlayer's hand
@@ -162,7 +165,7 @@ public class IntelligentPlayer extends Player {
 			int index = rand.nextInt(currentDeck.notPlayed.size());
 			choice = currentDeck.notPlayed.get(index);
 
-			if (!inHand(choice)) {
+			if (!inHand(choice, currentHand)) {
 				// not in Intelligent Player's hand
 				valid = true;
 			}
@@ -175,35 +178,37 @@ public class IntelligentPlayer extends Player {
 		return deck.played.size() > 0;
 	}
 
-	public void copyHand(ArrayList<Card>[] hand) {
-
+	public ArrayList<Card>[]  copyHand(ArrayList<Card>[] hand) {
+		ArrayList<Card>[] currentHand =  new ArrayList[4];
 		for (int i = 0; i < 4; i++) {
-			copyHand[i].clear();
+			//copyHand[i].clear();
+			currentHand[i] = new ArrayList<Card>();
 			for (Card current : hand[i]) {
 //				System.out.print(current.toString()+", ");
-				copyHand[i].add(current);
+				currentHand[i].add(current);
 			}
 //			System.out.println("next suit");
 		}
+		return currentHand;
 	}
 
-	public void removeFromCopy(Card card) {
+	public void removeFromCopy(Card card, ArrayList<Card>[] currentHand) {
 		// remove card from hand
 		System.out.println("removing from copy "+card.toString());
-		printCopyHand();
-		for (Card current : copyHand[card.suit]) {
+		printCopyHand(currentHand);
+		for (Card current : currentHand[card.suit]) {
 			if (current.rank == card.rank) {
-				copyHand[card.suit].remove(current);
+				currentHand[card.suit].remove(current);
 				break;
 			}
 		}
-		printCopyHand();
+		printCopyHand(currentHand);
 
 	}
 
-	public boolean inHand(Card card) {
+	public boolean inHand(Card card,  ArrayList<Card>[] currentHand) {
 		for (int i = 0; i < 4; i++) {
-			for (Card mine : copyHand[i]) {
+			for (Card mine : currentHand[i]) {
 				if (mine.equals(card)) {
 					return true;
 				}
@@ -212,15 +217,15 @@ public class IntelligentPlayer extends Player {
 		return false;
 
 	}
-	private boolean isVoidCopy(int leadingSuit) {
-		return copyHand[leadingSuit].size() == 0;
+	
+	private boolean isVoidCopy(int leadingSuit, ArrayList<Card>[] currentHand) {
+		return currentHand[leadingSuit].size() == 0;
 	}
 	
-
-	public void printCopyHand() {
+	public void printCopyHand( ArrayList<Card>[] currentHand) {
 		// for debugging
 		int length = 0;
-		for (ArrayList<Card> suit : copyHand) {
+		for (ArrayList<Card> suit : currentHand) {
 //			for (Object card : suit) {
 //				System.out.println(card.toString());
 //			}
