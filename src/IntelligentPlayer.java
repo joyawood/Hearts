@@ -8,8 +8,15 @@ public class IntelligentPlayer extends Player {
 		super(ID);
 
 	}
+	public Card playCard(State currentState){
+		return playCard(currentState, this.hand);
+	}
 
 	public Card playCard(State currentState, ArrayList<Card>[] recursiveHand) {
+		
+		System.out.println("Now in Intelligent Player playCard");
+		currentState.printState();
+		
 		// this is baseline worst score to compare against card options
 		int bestScore = 27;
 		// this will be the card we output
@@ -35,6 +42,7 @@ public class IntelligentPlayer extends Player {
 				System.out.println("Hearts is broken");
 				for (int suit = 0; suit < 4; suit++) {
 					for (Card valid : currentHand[suit]) {
+						
 						int score = playout(valid, currentState, currentHand);
 						if (score < bestScore) {
 							choice = valid;
@@ -98,28 +106,31 @@ public class IntelligentPlayer extends Player {
 
 	}
 
-	private int playout(Card choice, State currentState, ArrayList<Card>[] currentHand) {
+	private int playout(Card choice, State prevState, ArrayList<Card>[] prevHand) {
+		System.out.println("Currently playing out: " + choice.toString());
+
 		// keep track of points
 		int points = 0;
 
-		// // make a safe copy of state
-		// State currentState = new State(prevState);
-		//
+		 // make a safe copy of state
+		 State currentState = new State(prevState);
+		
 		// // update copy
-		// currentState.updateState(choice, this.playerID);// current player is
+		 currentState.updateState(choice, this.playerID);// current player is
 		// our intelligent player
 
 		// update hand
+		ArrayList<Card>[] currentHand = copyHand(prevHand);
 		removeFromCopy(choice, currentHand);
 
+		int counter = 1;
 		// finish trick
-		for (int i = currentState.cardsInTrick.size(); i < 4; i++) {// size
-																	// reflects
-																	// our
-																	// played
-																	// card
+		for (int i = currentState.cardsInTrick.size(); i < 4; i++) {
 			Card opponentChoice = playRandomCard(currentState.deck, currentHand);
-			int oppenentID = (this.playerID + 1) % 4;
+			int oppenentID = (this.playerID + counter) % 4;
+			counter++;
+			System.out.println("finish trick simulating move by player " + oppenentID);
+
 			currentState.updateState(opponentChoice, oppenentID);
 		}
 
@@ -133,13 +144,10 @@ public class IntelligentPlayer extends Player {
 		// continue playing out round
 		while (roundsRemaining(currentState.deck)) {
 
-			int trickNum = currentState.deck.played.size() / 4 + 1;// the
-																	// current
-																	// trick
-																	// number
+			int trickNum = currentState.deck.played.size() / 4 + 1;
 
-			for (int trick = trickNum; trick < 14; trick++) {// rounds go from
-																// 1-13
+			for (int trick = trickNum; trick < 14; trick++) {
+				System.out.println("Starting trick "+trick);
 
 				// create new state
 				ArrayList<Card> cardsInTrick = new ArrayList<Card>();
@@ -229,7 +237,6 @@ public class IntelligentPlayer extends Player {
 				break;
 			}
 		}
-		// printCopyHand(currentHand);
 	}
 
 	public boolean inHand(Card card, ArrayList<Card>[] currentHand) {
@@ -257,7 +264,6 @@ public class IntelligentPlayer extends Player {
 			// }
 			length += suit.size();
 		}
-		System.out.println(length);
 	}
 
 }

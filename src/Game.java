@@ -17,6 +17,10 @@ public class Game {
 	public void playRound() {
 		// setup round
 		setupRound();
+		System.out.println("Intelligent player hand:");
+		players[2].printHand();
+		System.out.println(" ");
+
 		// find starting player
 		int startingPlayer = 0;
 		for (int i = 0; i < players.length; i++) {
@@ -26,6 +30,8 @@ public class Game {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
+			System.out.println("Trick number " + trick);
+			System.out.println(" ");
 
 			// create new state
 			ArrayList<Card> cardsInTrick = new ArrayList<Card>();
@@ -36,8 +42,14 @@ public class Game {
 				// get index of current player
 				int currentPlayer = player % 4;
 				// tell player to play
+				System.out.println("currently on player " + players[currentPlayer].playerID);
+
 				Card choice = players[currentPlayer].playCard(currentState);
-				currentState.update(choice, currentPlayer);
+				System.out.println("player " + currentPlayer + " played " + choice.toString());
+				System.out.println(" ");
+				System.out.println(" ");
+
+				currentState.updateState(choice, currentPlayer);//look at this
 
 			}
 			// all cards in trick have been played

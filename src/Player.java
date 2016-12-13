@@ -78,7 +78,7 @@ public class Player {
 		// for debugging
 		for (ArrayList<Card> suit : hand) {
 			for (Object card : suit) {
-				System.out.println(card.toString());
+				System.out.print(card.toString() + ", ");
 			}
 		}
 	}

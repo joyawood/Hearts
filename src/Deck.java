@@ -1,13 +1,24 @@
 import java.util.ArrayList;
 
 public class Deck {
-	Card[] cards = new Card[52];
+	Card[] cards;
 	int length = 52;
 	ArrayList<Card> played;
 	ArrayList<Card> notPlayed;
+	
 
 	public Deck() {
-		newDeck();
+		cards = new Card[52];
+		
+		int index = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 2; j < 15; j++) {
+				Card card = new Card(j, i);
+				cards[index] = card;
+				index++;
+			}
+		}
+		
 		shuffle();
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
@@ -19,7 +30,17 @@ public class Deck {
 
 	public Deck(Deck toCopy) {
 		// makes a deep copy of the passed in deck object
-		newDeck();
+		cards = new Card[52];
+		
+		int index = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 2; j < 15; j++) {
+				Card card = new Card(j, i);
+				cards[index] = card;
+				index++;
+			}
+		}
+		
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
 
@@ -34,22 +55,23 @@ public class Deck {
 
 	public void reset() {
 		played.clear();
+		notPlayed.clear();
 		for (Card current : cards) {
 			notPlayed.add(current);
 		}
 		shuffle();
 	}
 
-	public void newDeck() {
-		int index = 0;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 2; j < 15; j++) {
-				Card card = new Card(j, i);
-				cards[index] = card;
-				index++;
-			}
-		}
-	}
+//	public void newDeck() {
+//		int index = 0;
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 2; j < 15; j++) {
+//				Card card = new Card(j, i);
+//				cards[index] = card;
+//				index++;
+//			}
+//		}
+//	}
 
 	public void shuffle() {
 		for (int i = length - 1; i > 0; i--) {
@@ -61,10 +83,12 @@ public class Deck {
 	}
 
 	public void updatePlayed(Card current) {
+		
 		for (Card card : notPlayed) {
 			if (card.equals(current)) {
 				notPlayed.remove(card);
 				played.add(card);
+
 				break;
 			}
 		}
