@@ -6,7 +6,7 @@ public class IntelligentPlayer extends Player {
 
 	public IntelligentPlayer(int ID) {
 		super(ID);
-	
+
 	}
 
 	public Card playCard(State currentState) {
@@ -24,8 +24,10 @@ public class IntelligentPlayer extends Player {
 			currentState.twoOfClubs = true;
 			choice = new Card(2, 2);
 		} else if (leadingSuit == -1 || isVoidCopy(leadingSuit, currentHand)) {
+			System.out.println("We are leading or void");
 			// if you're leading or void
 			if (currentState.heartsBroken) {
+				System.out.println("Hearts is broken");
 				// if hearts broken
 				// run through all cards - consider all cards
 				for (int suit = 0; suit < 4; suit++) {
@@ -36,8 +38,11 @@ public class IntelligentPlayer extends Player {
 						}
 					}
 				}
+				System.out.println("We chose "+choice.toString());
 			} else {
 				// if not hearts broken
+				System.out.println("Hearts is not broken");
+
 				// run through all valid cards - consider 1-3
 				for (int suit = 1; suit < 4; suit++) {
 					for (Card valid : hand[suit]) {
@@ -47,18 +52,22 @@ public class IntelligentPlayer extends Player {
 						}
 					}
 				}
+				System.out.println("We chose "+choice.toString());
 			}
 
 		} else {
 			// not leading and not void
 			// run through all valid cards - consider leading suit
+			System.out.println("Not leading nor void")
 			for (Card valid : hand[leadingSuit]) {
 				System.out.println("not leading, not void");
-				int score = playout(valid, currentState, currentHand);				
+				int score = playout(valid, currentState, currentHand);
 				if (score < bestScore) {
 					choice = valid;
 				}
 			}
+			System.out.println("We chose "+choice.toString());
+
 		}
 		remove(choice);
 		setHand(currentHand);
@@ -66,7 +75,7 @@ public class IntelligentPlayer extends Player {
 		return choice;
 	}
 
-	
+
 	private void setHand(ArrayList<Card>[] currentHand) {
 		for(int suit = 0; suit <4; suit++){
 			hand[suit].clear();
@@ -74,13 +83,13 @@ public class IntelligentPlayer extends Player {
 				hand[suit].add(card);
 			}
 		}
-		
+
 	}
 
 	private int playout(Card choice, State prevState, ArrayList<Card>[] prevHand) {
 		// keep track of points
 		int points = 0;
-		
+
 		// make a safe copy of state
 		State currentState = new State(prevState);
 
@@ -90,7 +99,7 @@ public class IntelligentPlayer extends Player {
 		// make safe copy of hand
 		ArrayList<Card>[] currentHand = copyHand(prevHand);
 //		printCopyHand();
-		
+
 
 		// update hand
 		removeFromCopy(choice, currentHand);
@@ -122,7 +131,7 @@ public class IntelligentPlayer extends Player {
 				State newState = new State(deck, currentState.heartsBroken, currentState.twoOfClubs, cardsInTrick,
 						startingPlayer);
 
-				// go through each of the 4 players and have them play 
+				// go through each of the 4 players and have them play
 				for (int player = startingPlayer; player < startingPlayer + 4; player++) {
 					Card newChoice = null;
 					int newCurrentPlayer = player % 4;
@@ -217,11 +226,11 @@ public class IntelligentPlayer extends Player {
 		return false;
 
 	}
-	
+
 	private boolean isVoidCopy(int leadingSuit, ArrayList<Card>[] currentHand) {
 		return currentHand[leadingSuit].size() == 0;
 	}
-	
+
 	public void printCopyHand( ArrayList<Card>[] currentHand) {
 		// for debugging
 		int length = 0;
