@@ -9,13 +9,16 @@ public class IntelligentPlayer extends Player {
 
 	}
 
-	public Card playCard(State currentState) {
+	public Card playCard(State currentState, ArrayList<Card>[] recursiveHand) {
+		//this is baseline worst score to compare against card options
 		int bestScore = 27;
+		//this will be the card we output
 		Card choice = null;
+		
 		int leadingSuit = currentState.getLeadingSuit();
 
-		// first - copy hand
-		ArrayList<Card>[] currentHand = copyHand(hand);
+		// first - copy hand into new arraylist (?)
+		ArrayList<Card>[] currentHand = copyHand(recursiveHand);
 		// second - loop through valid options in your hand and play out game
 
 		// if first round:
@@ -27,11 +30,11 @@ public class IntelligentPlayer extends Player {
 			System.out.println("We are leading or void");
 			// if you're leading or void
 			if (currentState.heartsBroken) {
-				System.out.println("Hearts is broken");
 				// if hearts broken
 				// run through all cards - consider all cards
+				System.out.println("Hearts is broken");
 				for (int suit = 0; suit < 4; suit++) {
-					for (Card valid : hand[suit]) {
+					for (Card valid : currentHand[suit]) {//actual hand, is this right?
 						int score = playout(valid, currentState, currentHand);
 						if (score < bestScore) {
 							choice = valid;
@@ -56,9 +59,9 @@ public class IntelligentPlayer extends Player {
 			}
 
 		} else {
-			// not leading and not void
+			// not leading and not void - following
 			// run through all valid cards - consider leading suit
-			System.out.println("Not leading nor void")
+			System.out.println("Not leading nor void");
 			for (Card valid : hand[leadingSuit]) {
 				System.out.println("not leading, not void");
 				int score = playout(valid, currentState, currentHand);
@@ -86,34 +89,26 @@ public class IntelligentPlayer extends Player {
 
 	}
 
-	private int playout(Card choice, State prevState, ArrayList<Card>[] prevHand) {
+	private int playout(Card choice, State currentState, ArrayList<Card>[] currentHand) {
 		// keep track of points
 		int points = 0;
 
-		// make a safe copy of state
-		State currentState = new State(prevState);
-
-		// update copy
-		currentState.update(choice, prevState.currentPlayer);// off by one maybe
-
-		// make safe copy of hand
-		ArrayList<Card>[] currentHand = copyHand(prevHand);
-//		printCopyHand();
-
+//		// make a safe copy of state
+//		State currentState = new State(prevState);
+//
+//		// update copy
+//		currentState.updateState(choice, this.playerID);// current player is our intelligent player
 
 		// update hand
-		removeFromCopy(choice, currentHand);
-
-		// pointer to current deck
-		Deck deck = currentState.deck;
-		int currentPlayer = prevState.currentPlayer;//+1?
+		removeFromCopy(choice, currentHand);		
 
 		// finish trick
-		for (int i = currentState.cardsInTrick.size() - 1; i < 4; i++) {
-			Card opponentChoice = playRandomCard(deck, currentHand);
-			currentPlayer = (currentPlayer + 1) % 4;
-			currentState.update(choice, currentPlayer);
+		for (int i = currentState.cardsInTrick.size(); i < 4; i++) {//size reflects our played card
+			Card opponentChoice = playRandomCard(currentState.deck, currentHand);
+			int oppenentID = (this.playerID + 1) % 4;
+			currentState.updateState(opponentChoice, oppenentID);
 		}
+		
 		// find player to start next round
 		int startingPlayer = currentState.winningPlayer();
 
@@ -121,31 +116,33 @@ public class IntelligentPlayer extends Player {
 		if (startingPlayer == this.playerID) points += currentState.points;// we won, add points to tally
 
 		// continue playing out round
-		while (roundsRemaining(deck)) {
+		while (roundsRemaining(currentState.deck)) {
 
-			int trickNum = deck.played.size() / 4 + 1;// the current trick number
+			int trickNum = currentState.deck.played.size() / 4 + 1;// the current trick number
 
-			for (int trick = trickNum; trick < 14; trick++) {
+			for (int trick = trickNum; trick < 14; trick++) {//rounds go from 1-13
+				
 				// create new state
 				ArrayList<Card> cardsInTrick = new ArrayList<Card>();
-				State newState = new State(deck, currentState.heartsBroken, currentState.twoOfClubs, cardsInTrick,
+				State newState = new State(currentState.deck, currentState.heartsBroken, currentState.twoOfClubs, cardsInTrick,
 						startingPlayer);
 
 				// go through each of the 4 players and have them play
 				for (int player = startingPlayer; player < startingPlayer + 4; player++) {
 					Card newChoice = null;
-					int newCurrentPlayer = player % 4;
+					int currentPlayer = player % 4;
 
-					// is the current player the Intelligent Player?
-					if (newCurrentPlayer == this.playerID) {
+					// check if the current player is the Intelligent Player
+					if (currentPlayer == this.playerID) {
 						// recursively choose card
-						newChoice = playCard(newState);
+						newChoice = playCard(newState, currentHand);
 					} else {
 						// simulate an opponents move
-						newChoice = playRandomCard(deck, currentHand);
+						newChoice = playRandomCard(newState.deck, currentHand);
 					}
-					newCurrentPlayer = (newCurrentPlayer + 1) % 4;
-					newState.update(newChoice, newCurrentPlayer);
+					
+					//updates deck etc
+					newState.updateState(newChoice, currentPlayer);
 
 				}
 
@@ -184,7 +181,10 @@ public class IntelligentPlayer extends Player {
 	}
 
 	private boolean roundsRemaining(Deck deck) {
-		return deck.played.size() > 0;
+		/*
+		 * if there are unplayed cards, there are rounds remaining
+		 */
+		return deck.notPlayed.size() > 0;
 	}
 
 	public ArrayList<Card>[]  copyHand(ArrayList<Card>[] hand) {

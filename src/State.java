@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class State {
-	int currentPlayer;
+	//took out current player, maybe we don't need it, if we have playerIDs for updating winner
 	int startingPlayer;
 	int points;
 
@@ -17,7 +17,6 @@ public class State {
 
 
 	public State(Deck deck, boolean heartsBroken, boolean twoOfClubs, ArrayList<Card> cardsInTrick, int currentPlayer) {
-		this.currentPlayer = currentPlayer;
 		this.startingPlayer = currentPlayer;
 		this.currentWinner = currentPlayer;
 		this.points = 0;
@@ -29,7 +28,6 @@ public class State {
 
 	public State(State stateToCopy) {
 		this.points = stateToCopy.points;
-		this.currentPlayer = stateToCopy.currentPlayer;
 		this.currentWinner = stateToCopy.currentWinner;
 		this.startingPlayer = stateToCopy.startingPlayer;
 		this.deck = new Deck(stateToCopy.deck);
@@ -38,12 +36,13 @@ public class State {
 		this.cardsInTrick = new ArrayList<Card>(stateToCopy.cardsInTrick);
 	}
 
-	public void update(Card played, int currentPlayer) {
+	public void updateState(Card played, int currentPlayer) {
 		/*
 		 * this function updates the deck to keep track of played card,
 		 * and it updates the winning card and player in state,
 		 * also updates flags
 		 */
+		
 		// update winning card and winning player
 		if (cardsInTrick.size() > 0) {
 			if (played.suit == winningCard.suit) {
@@ -61,8 +60,6 @@ public class State {
 			currentWinner = currentPlayer;
 		}
 
-		// update current player to next player
-		this.currentPlayer = currentPlayer;
 
 		// add card played to trick
 		this.cardsInTrick.add(played);
@@ -88,21 +85,23 @@ public class State {
 		return currentWinner;
 	}
 	
-	public int advance(Card card, ArrayList<Card>[] playoutHand){
-		int points = 0;
-		//check round
-		update(card, currentPlayer);//?
-		
-		while(validTrick()){
-			Card choice = playRandomCard(playoutHand);
-			currentPlayer++;
-			update(choice, currentPlayer);
-		}
-		
-		
-		
-		return points;
-	}
+//	public int advance(Card card, ArrayList<Card>[] playoutHand){
+//		int points = 0;
+//		//check round
+//		update(card, currentPlayer);//?
+//		
+//		while(validTrick()){
+//			Card choice = playRandomCard(playoutHand);
+//			currentPlayer++;
+//			update(choice, currentPlayer);
+//		}
+//		
+//		
+//		
+//		return points;
+//	}
+//	
+	
 	public int getLeadingSuit() {
 		if (this.cardsInTrick.size() != 0) {
 			return this.cardsInTrick.get(0).suit;
