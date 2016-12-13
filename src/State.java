@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class State {
 	int currentPlayer;
@@ -12,6 +13,8 @@ public class State {
 	boolean heartsBroken = false;
 	boolean twoOfClubs = false;
 	ArrayList<Card> cardsInTrick;
+	Random rand = new Random();
+
 
 	public State(Deck deck, boolean heartsBroken, boolean twoOfClubs, ArrayList<Card> cardsInTrick, int currentPlayer) {
 		this.currentPlayer = currentPlayer;
@@ -84,7 +87,22 @@ public class State {
 	public int winningPlayer() {
 		return currentWinner;
 	}
-
+	
+	public int advance(Card card, ArrayList<Card>[] playoutHand){
+		int points = 0;
+		//check round
+		update(card, currentPlayer);//?
+		
+		while(validTrick()){
+			Card choice = playRandomCard(playoutHand);
+			currentPlayer++;
+			update(choice, currentPlayer);
+		}
+		
+		
+		
+		return points;
+	}
 	public int getLeadingSuit() {
 		if (this.cardsInTrick.size() != 0) {
 			return this.cardsInTrick.get(0).suit;
@@ -92,4 +110,48 @@ public class State {
 			return -1;
 		}
 	}
+	
+	public boolean roundsRemaining() {
+		return this.deck.played.size() > 0;
+	}
+	
+	public boolean validTrick() {
+		return cardsInTrick.size()<4;
+	}
+	
+
+
+	private Card playRandomCard(ArrayList<Card>[] currentHand) {
+		/*
+		 * Method to return a random unplayed card that is not in the
+		 * IntelligentPlayer's hand
+		 */
+		boolean valid = false;
+		Card choice = null;
+		while (!valid) {
+			int index = rand.nextInt(deck.notPlayed.size());
+			choice = deck.notPlayed.get(index);
+
+			if (!inHand(choice, currentHand)) {
+				// not in Intelligent Player's hand
+				valid = true;
+			}
+
+		}
+		return choice;
+	}
+
+	public boolean inHand(Card card,  ArrayList<Card>[] currentHand) {
+		for (int i = 0; i < 4; i++) {
+			for (Card mine : currentHand[i]) {
+				if (mine.equals(card)) {
+					return true;
+				}
+			}
+		}
+		return false;
+
+	}
+	
+
 }

@@ -203,7 +203,6 @@ public class IntelligentPlayer extends Player {
 
 	public void removeFromCopy(Card card, ArrayList<Card>[] currentHand) {
 		// remove card from hand
-		System.out.println("removing from copy "+card.toString());
 		printCopyHand(currentHand);
 		for (Card current : currentHand[card.suit]) {
 			if (current.rank == card.rank) {
@@ -211,8 +210,7 @@ public class IntelligentPlayer extends Player {
 				break;
 			}
 		}
-		printCopyHand(currentHand);
-
+//		printCopyHand(currentHand);
 	}
 
 	public boolean inHand(Card card,  ArrayList<Card>[] currentHand) {
