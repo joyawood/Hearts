@@ -9,7 +9,7 @@ public class Game {
 	public Game() {
 		players[0] = new NaivePlayer(0);
 		players[1] = new NaivePlayer(1);
-		players[2] = new IntelligentPlayer(2);
+		players[2] = new IntelligentPlayer2(2);
 		players[3] = new RandomPlayer(3);
 		this.deck = new Deck();
 	}

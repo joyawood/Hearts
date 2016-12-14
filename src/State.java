@@ -35,6 +35,12 @@ public class State {
 		this.twoOfClubs = stateToCopy.twoOfClubs;
 		this.cardsInTrick = new ArrayList<Card>(stateToCopy.cardsInTrick);
 	}
+	
+	public void clearTrick(){
+		this.cardsInTrick = new ArrayList<Card>();
+		this.winningCard = new Card(2, 2);
+		this.points = 0;
+	}
 
 	public void updateState(Card played, int currentPlayer) {
 		/*
@@ -44,7 +50,11 @@ public class State {
 		 */
 //		System.out.println("updating state with " + played.toString() + " played by player "+currentPlayer + "\n");
 		// add card played to trick
-		
+//		System.out.println("-----------------------");
+//
+//		System.out.println("\nRemoving from deck: " + played.toString());
+		System.out.println("----updating cards----");
+
 		this.cardsInTrick.add(played);
 
 		// update winning card and winning player

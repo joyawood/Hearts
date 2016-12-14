@@ -28,7 +28,7 @@ public class IntelligentPlayer extends Player {
 				choice = recursiveHand[0].get(0);
 			} else {
 				// lowest non heart
-				choice = playLowestNonHeart();
+				choice = playLowestNonHeart(recursiveHand);
 			}
 		} else if (isVoidCopy(leadingSuit, recursiveHand)) {
 			if (hasQueen()) {
@@ -39,13 +39,21 @@ public class IntelligentPlayer extends Player {
 				choice = recursiveHand[0].get(recursiveHand[0].size() - 1);
 			} else {
 				// else high card
-				choice = playHighestNonHeartCard();
+				choice = playHighestNonHeartCard(recursiveHand);
 			}
 		} else {
 			// play lowest of suite
 			choice = recursiveHand[leadingSuit].get(0);
 		}
-		System.out.println("naively playing "+ choice);
+		
+		if(choice == null) printCopyHand(recursiveHand);
+		
+		if (choice == null && hasOnlyHearts()) {
+			choice = recursiveHand[0].get(0);
+			System.out.println("We have only hearts, playing lowest " + choice.toString());
+			printCopyHand(recursiveHand);
+
+		}
 		this.removeFromCopy(choice, recursiveHand);
 		return choice;
 	}
@@ -130,7 +138,7 @@ public class IntelligentPlayer extends Player {
 
 		}
 		if (choice == null && hasOnlyHearts()) {
-			choice = hand[0].get(0);
+			choice = currentHand[0].get(0);
 			System.out.println("We have only hearts, playing lowest " + choice.toString());
 
 		}
@@ -197,6 +205,7 @@ public class IntelligentPlayer extends Player {
 
 				// check if the current player is the Intelligent Player
 				if (currentPlayer == this.playerID) {
+					System.out.println("new choice from naive");
 					// recursively choose card
 					newChoice = playCardNaive(newState, currentHand);
 //					removeFromCopy(newChoice, currentHand);
@@ -204,10 +213,12 @@ public class IntelligentPlayer extends Player {
 
 				} else {
 					// simulate an opponents move
+					System.out.println("new choice from random");
 					newChoice = playRandomCard(newState.deck, currentHand);
 				}
 
 				// updates deck etc
+				System.out.println("new choice info :"+newChoice.rank+", "+newChoice.suit);
 				System.out.println("about to remove "+ newChoice.toString() + " from current deck");
 				System.out.println("before: "+ newState.deck.notPlayed);
 				newState.updateState(newChoice, currentPlayer);
@@ -254,6 +265,8 @@ public class IntelligentPlayer extends Player {
 			}
 
 		}
+		
+		
 		return choice;
 	}
 //
@@ -278,6 +291,35 @@ public class IntelligentPlayer extends Player {
 			// System.out.println("next suit");
 		}
 		return currentHand;
+	}
+	
+	public Card playLowestNonHeart(ArrayList<Card>[] currentHand) {
+		Card lowest = new Card(52, 0);
+		for (int i = currentHand.length - 1; i > 0; i--) {
+			for (Card card : currentHand[i]) {
+				if (card.rank < lowest.rank) {
+					lowest = card;
+				}
+			}
+
+		}
+		if(lowest.rank==52){
+			lowest = currentHand[0].get(0);
+		}
+		
+		return lowest;
+	}
+	
+	public Card playHighestNonHeartCard(ArrayList<Card>[] currentHand) {
+		Card highest = new Card(0, 0);
+		for (int i = 1; i < currentHand.length; i++) {
+			for (Card card : currentHand[i]) {
+				if (card.rank > highest.rank) {
+					highest = card;
+				}
+			}
+		}
+		return highest;
 	}
 
 	public void removeFromCopy(Card card, ArrayList<Card>[] currentHand) {
