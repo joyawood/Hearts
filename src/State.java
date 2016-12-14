@@ -43,9 +43,12 @@ public class State {
 		 * also updates flags
 		 */
 //		System.out.println("updating state with " + played.toString() + " played by player "+currentPlayer + "\n");
+		// add card played to trick
+		
+		this.cardsInTrick.add(played);
 
 		// update winning card and winning player
-		if (cardsInTrick.size() > 0) {
+		if (cardsInTrick.size() > 1) {
 			//System.out.println(played.toString());
 			if (played.suit == winningCard.suit) {
 				if (played.rank > winningCard.rank) {
@@ -54,17 +57,19 @@ public class State {
 					winningCard = played;
 					// keep track of index of player who is winning
 					currentWinner = currentPlayer;
+//					System.out.println("Updating winner to be "+currentWinner);
+//					System.out.println("Trick is: "+cardsInTrick);
 				}
 			}
 		} else {
 			winningCard = played;
 			// keep track of index of player who is winning
 			currentWinner = currentPlayer;
+//			System.out.println("Updating winner to be first card (Player "+currentWinner+")");
+//			System.out.println("Trick is: "+cardsInTrick);
+
 		}
 
-
-		// add card played to trick
-		this.cardsInTrick.add(played);
 		
 		// update our copy of the deck to reflect the change
 		this.deck.updatePlayed(played);
@@ -157,17 +162,17 @@ public class State {
 
 	}
 	
-//	public void printState(){
-//		System.out.println("Printing State.");
+	public void printState(){
+		System.out.println("Printing State.");
 //		System.out.println("hearts broken: "+ heartsBroken);
 //		System.out.println("two of clubs: "+ twoOfClubs);
-//		System.out.println("starting player: "+ startingPlayer);
-//		System.out.println("cards played:  "+ deck.played);
-//		System.out.println("cards not played:  "+ deck.notPlayed);
-//
-//		System.out.println(" ");
-//		System.out.println(" ");
-//
-//	}
+		System.out.println("starting player: "+ startingPlayer);
+		System.out.println("cards played:  "+ deck.played);
+		System.out.println("cards not played:  "+ deck.notPlayed);
+
+		System.out.println(" ");
+		System.out.println(" ");
+
+	}
 
 }

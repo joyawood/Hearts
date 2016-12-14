@@ -21,9 +21,9 @@ public class Player {
 
 	public void remove(Card card) {
 		// remove card from hand
-		System.out.println("printing card to remove and hand");
-		printHand();
-		System.out.println(card.toString());
+//		System.out.println("printing card to remove and hand");
+//		printHand();
+//		System.out.println(card.toString());
 		for (Card current : hand[card.suit]) {
 			if (current.rank == card.rank) {
 				hand[card.suit].remove(current);
