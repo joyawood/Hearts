@@ -1,15 +1,18 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game {
 	static Player[] players = new Player[4];
+	static String[] names = {"Ananya", "Christopher", "Amy", "Pete"};
 	Deck deck;
 	boolean heartsBroken = false;
 	boolean twoOfClubs = false;
+	static Scanner input = new Scanner(System.in);
 
 	public Game() {
-		players[0] = new NaivePlayer(0);
-		players[1] = new IntelligentPlayer2(1);
-		players[2] = new IntelligentPlayer2(2);
+		players[0] = new HumanPlayer(0);
+		players[1] = new IntelligentPlayer(1);
+		players[2] = new IntelligentPlayer(2);
 		players[3] = new RandomPlayer(3);
 		this.deck = new Deck();
 	}
@@ -17,12 +20,6 @@ public class Game {
 	public void playRound() {
 		// setup round
 		setupRound();
-<<<<<<< Updated upstream
-=======
-//		System.out.println("Intelligent player hand:");
-//		players[2].printHand();
-//		System.out.println(" ");
->>>>>>> Stashed changes
 
 		// find starting player
 		int startingPlayer = 0;
@@ -33,16 +30,6 @@ public class Game {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
-<<<<<<< Updated upstream
-=======
-//			System.out.println("____________________________________________________________");
-//			System.out.println("____________________________________________________________");
-//			System.out.println("____________________________________________________________");
-//			System.out.println("Trick number " + trick);
-//			System.out.println("____________________________________________________________");
-//			System.out.println("____________________________________________________________");
-//			System.out.println("____________________________________________________________");
->>>>>>> Stashed changes
 
 			System.out.println("");
 			System.out.println("Trick number " + trick +":");
@@ -56,20 +43,11 @@ public class Game {
 				// get index of current player
 				int currentPlayer = player % 4;
 				// tell player to play
-<<<<<<< Updated upstream
 
 				Card choice = players[currentPlayer].playCard(currentState);
-				System.out.println("Player " + currentPlayer + " played " + choice.toString()+".");
-=======
-//				System.out.println("currently on player " + players[currentPlayer].playerID);
-
-				Card choice = players[currentPlayer].playCard(currentState);
-//				System.out.println("player " + currentPlayer + " played " + choice.toString());
-//				System.out.println(" ");
-//				System.out.println(" ");
-
->>>>>>> Stashed changes
-				currentState.updateState(choice, currentPlayer);//look at this
+				System.out.println(names[currentPlayer] + " played the " + choice.toString()+".");
+				currentState.updateState(choice, currentPlayer);
+				input.nextLine();
 
 			}
 			// all cards in trick have been played
@@ -77,7 +55,7 @@ public class Game {
 			startingPlayer = currentState.winningPlayer();
 			// update points for starting player (who just won last round)
 			players[startingPlayer].points += currentState.points;
-			System.out.println("* Player "+startingPlayer+" recieved "+currentState.points+" points.");
+			System.out.println(names[startingPlayer]+" recieved "+currentState.points+" points.");
 			updateGame(currentState);
 		}
 

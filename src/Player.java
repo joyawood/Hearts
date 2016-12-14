@@ -90,12 +90,20 @@ public class Player {
 		return lowest;
 	}
 	public void printHand() {
-		// for debugging
 		for (ArrayList<Card> suit : hand) {
-			for (Object card : suit) {
-				System.out.print(card.toString() + ", ");
+			for (int i = 0; i < suit.size(); i ++) {
+				Card card = suit.get(i);
+				System.out.print(card.toString());
+				if (i != suit.size() -1){
+					System.out.print(", ");
+
+				}
+
 			}
+			System.out.println("");
+
 		}
+
 	}
 
 	public boolean hasOnlyHearts() {
