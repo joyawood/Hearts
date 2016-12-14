@@ -21,6 +21,9 @@ public class Player {
 
 	public void remove(Card card) {
 		// remove card from hand
+		System.out.println("printing card to remove and hand");
+		printHand();
+		System.out.println(card.toString());
 		for (Card current : hand[card.suit]) {
 			if (current.rank == card.rank) {
 				hand[card.suit].remove(current);
@@ -73,7 +76,19 @@ public class Player {
 			Collections.sort(suit);
 		}
 	}
+	public Card playLowestNonHeart() {
+		Card lowest = new Card(52, 0);
+		for (int i = hand.length - 1; i > 0; i--) {
+			for (Card card : hand[i]) {
+				if (card.rank < lowest.rank) {
+					lowest = card;
+				}
+			}
 
+		}
+
+		return lowest;
+	}
 	public void printHand() {
 		// for debugging
 		for (ArrayList<Card> suit : hand) {
@@ -91,5 +106,15 @@ public class Player {
 		}
 		return true;
 	}
-
+	public Card playHighestNonHeartCard() {
+		Card highest = new Card(0, 0);
+		for (int i = 1; i < hand.length; i++) {
+			for (Card card : hand[i]) {
+				if (card.rank > highest.rank) {
+					highest = card;
+				}
+			}
+		}
+		return highest;
+	}
 }

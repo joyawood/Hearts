@@ -42,7 +42,7 @@ public class State {
 		 * and it updates the winning card and player in state,
 		 * also updates flags
 		 */
-		System.out.println("updating state with " + played.toString() + " played by player "+currentPlayer + "\n");
+//		System.out.println("updating state with " + played.toString() + " played by player "+currentPlayer + "\n");
 
 		// update winning card and winning player
 		if (cardsInTrick.size() > 0) {
@@ -115,9 +115,9 @@ public class State {
 		}
 	}
 	
-	public boolean roundsRemaining() {
-		return this.deck.played.size() > 0;
-	}
+//	public boolean roundsRemaining() {
+//		return this.deck.played.size() > 0;
+//	}
 	
 	public boolean validTrick() {
 		return cardsInTrick.size()<4;
@@ -157,17 +157,17 @@ public class State {
 
 	}
 	
-	public void printState(){
-		System.out.println("Printing State.");
-		System.out.println("hearts broken: "+ heartsBroken);
-		System.out.println("two of clubs: "+ twoOfClubs);
-		System.out.println("starting player: "+ startingPlayer);
-		System.out.println("cards played:  "+ deck.played);
-		System.out.println("cards not played:  "+ deck.notPlayed);
-
-		System.out.println(" ");
-		System.out.println(" ");
-
-	}
+//	public void printState(){
+//		System.out.println("Printing State.");
+//		System.out.println("hearts broken: "+ heartsBroken);
+//		System.out.println("two of clubs: "+ twoOfClubs);
+//		System.out.println("starting player: "+ startingPlayer);
+//		System.out.println("cards played:  "+ deck.played);
+//		System.out.println("cards not played:  "+ deck.notPlayed);
+//
+//		System.out.println(" ");
+//		System.out.println(" ");
+//
+//	}
 
 }

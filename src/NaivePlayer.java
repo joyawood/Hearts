@@ -43,30 +43,8 @@ public class NaivePlayer extends Player {
 		return choice;
 	}
 
-	private Card playHighestNonHeartCard() {
-		Card highest = new Card(0, 0);
-		for (int i = 1; i < hand.length; i++) {
-			for (Card card : hand[i]) {
-				if (card.rank > highest.rank) {
-					highest = card;
-				}
-			}
-		}
-		return highest;
-	}
 
-	private Card playLowestNonHeart() {
-		Card lowest = new Card(52, 0);
-		for (int i = hand.length - 1; i > 0; i--) {
-			for (Card card : hand[i]) {
-				if (card.rank < lowest.rank) {
-					lowest = card;
-				}
-			}
 
-		}
-
-		return lowest;
-	}
+	
 
 }
