@@ -97,24 +97,39 @@ public class IntelligentPlayer extends Player {
 		return choice;
 	}
 
-	private ArrayList<Card> order(State currentState,
-			ArrayList<Card>[] recursiveHand) {
+	private ArrayList<Card> order(State currentState, ArrayList<Card>[] recursiveHand) {
 		ArrayList<Card> orderedHand = new ArrayList<Card>();
 		int[] lengths = new int[4];
+
+		int shortestSuit = 0;
 		for (int i = 0; i < 4; i++) {
 			lengths[i] = recursiveHand[i].size();
 		}
+		if (currentState.heartsBroken) {
 
-		int shortestSuit = 0;
-		for (int j = 0; j < 4; j++) {
-			for (int i = 0; i < 4; i++) {
-				if (lengths[i] < lengths[shortestSuit]) {
-					shortestSuit = i;
+			for (int j = 0; j < 4; j++) {
+				for (int i = 0; i < 4; i++) {
+					if (lengths[i] < lengths[shortestSuit]) {
+						shortestSuit = i;
+					}
+				}
+				lengths[shortestSuit] = 13;
+				for (Card inShortest : recursiveHand[shortestSuit]) {
+					orderedHand.add(inShortest);
 				}
 			}
-			lengths[shortestSuit] = 13;
-			for(Card inShortest: recursiveHand[shortestSuit]){
-				orderedHand.add(inShortest);
+		} else {
+
+			for (int j = 1; j < 4; j++) {
+				for (int i = 0; i < 4; i++) {
+					if (lengths[i] < lengths[shortestSuit]) {
+						shortestSuit = i;
+					}
+				}
+				lengths[shortestSuit] = 13;
+				for (Card inShortest : recursiveHand[shortestSuit]) {
+					orderedHand.add(inShortest);
+				}
 			}
 		}
 		return orderedHand;
@@ -126,19 +141,16 @@ public class IntelligentPlayer extends Player {
 		int suitLength = 13;
 		int suitIndex = 0;
 		for (int i = 0; i < 4; i++) {
-			if (recursiveHand[i].size() < suitLength
-					&& recursiveHand[i].size() > 0) {
+			if (recursiveHand[i].size() < suitLength && recursiveHand[i].size() > 0) {
 				suitLength = recursiveHand[i].size();
 				suitIndex = i;
 			}
 		}
-		choice = recursiveHand[suitIndex]
-				.get(recursiveHand[suitIndex].size() - 1);
+		choice = recursiveHand[suitIndex].get(recursiveHand[suitIndex].size() - 1);
 		return choice;
 	}
 
-	public Card playCardNaive(State currentState,
-			ArrayList<Card>[] recursiveHand) {
+	public Card playCardNaive(State currentState, ArrayList<Card>[] recursiveHand) {
 		Card choice = null;
 		int leadingSuit = currentState.getLeadingSuit();
 
@@ -173,16 +185,14 @@ public class IntelligentPlayer extends Player {
 
 		if (choice == null && hasOnlyHearts(recursiveHand)) {
 			choice = recursiveHand[0].get(0);
-			System.out.println("We have only hearts, playing lowest "
-					+ choice.toString());
+			System.out.println("We have only hearts, playing lowest " + choice.toString());
 		}
 
 		remove(choice, recursiveHand);
 		return choice;
 	}
 
-	private int playout(Card startChoice, State startState,
-			ArrayList<Card>[] startHand) {
+	private int playout(Card startChoice, State startState, ArrayList<Card>[] startHand) {
 		int points = 0;
 		// System.out.println("-----------------------------------------------");
 
@@ -252,7 +262,8 @@ public class IntelligentPlayer extends Player {
 			playoutState.clearTrick();
 
 			int startingPlayer = playoutState.winningPlayer();
-			// System.out.println("** Player "+startingPlayer+" is starting the next round.");
+			// System.out.println("** Player "+startingPlayer+" is starting the
+			// next round.");
 
 			// we run through all of our players
 			for (int player = startingPlayer; player < startingPlayer + 4; player++) {
@@ -267,11 +278,13 @@ public class IntelligentPlayer extends Player {
 				} else {
 					choice = playRandomCard(playoutState, currentHand);
 				}
-				// System.out.println("-------Player "+currentPlayer+" played "+choice);
+				// System.out.println("-------Player "+currentPlayer+" played
+				// "+choice);
 				playoutState.updateState(choice, currentPlayer);
 			}
 
-			// System.out.println("-------** Player "+playoutState.currentWinner+" won the round.");
+			// System.out.println("-------** Player
+			// "+playoutState.currentWinner+" won the round.");
 
 			if (this.playerID == playoutState.currentWinner) {
 				// if we won, then assign points
@@ -371,7 +384,7 @@ public class IntelligentPlayer extends Player {
 		 * Method to return a random unplayed card that is not in the
 		 * IntelligentPlayer's hand
 		 */
-		// System.out.println("playing Random card, ignoring card in  ");
+		// System.out.println("playing Random card, ignoring card in ");
 		// this.printCopyHand(playerHand);
 
 		boolean valid = false;

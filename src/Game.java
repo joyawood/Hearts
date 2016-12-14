@@ -10,7 +10,7 @@ public class Game {
 	static Scanner input = new Scanner(System.in);
 
 	public Game() {
-		players[0] = new HumanPlayer(0);
+		players[0] = new NaivePlayer(0);
 		players[1] = new IntelligentPlayer(1);
 		players[2] = new IntelligentPlayer(2);
 		players[3] = new RandomPlayer(3);
@@ -47,7 +47,7 @@ public class Game {
 				Card choice = players[currentPlayer].playCard(currentState);
 				System.out.println(names[currentPlayer] + " played the " + choice.toString()+".");
 				currentState.updateState(choice, currentPlayer);
-				input.nextLine();
+				//input.nextLine();
 
 			}
 			// all cards in trick have been played
