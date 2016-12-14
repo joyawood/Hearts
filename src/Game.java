@@ -17,6 +17,12 @@ public class Game {
 	public void playRound() {
 		// setup round
 		setupRound();
+<<<<<<< Updated upstream
+=======
+//		System.out.println("Intelligent player hand:");
+//		players[2].printHand();
+//		System.out.println(" ");
+>>>>>>> Stashed changes
 
 		// find starting player
 		int startingPlayer = 0;
@@ -27,6 +33,16 @@ public class Game {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
+<<<<<<< Updated upstream
+=======
+//			System.out.println("____________________________________________________________");
+//			System.out.println("____________________________________________________________");
+//			System.out.println("____________________________________________________________");
+//			System.out.println("Trick number " + trick);
+//			System.out.println("____________________________________________________________");
+//			System.out.println("____________________________________________________________");
+//			System.out.println("____________________________________________________________");
+>>>>>>> Stashed changes
 
 			System.out.println("");
 			System.out.println("Trick number " + trick +":");
@@ -40,9 +56,19 @@ public class Game {
 				// get index of current player
 				int currentPlayer = player % 4;
 				// tell player to play
+<<<<<<< Updated upstream
 
 				Card choice = players[currentPlayer].playCard(currentState);
 				System.out.println("Player " + currentPlayer + " played " + choice.toString()+".");
+=======
+//				System.out.println("currently on player " + players[currentPlayer].playerID);
+
+				Card choice = players[currentPlayer].playCard(currentState);
+//				System.out.println("player " + currentPlayer + " played " + choice.toString());
+//				System.out.println(" ");
+//				System.out.println(" ");
+
+>>>>>>> Stashed changes
 				currentState.updateState(choice, currentPlayer);//look at this
 
 			}

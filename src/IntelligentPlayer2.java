@@ -184,11 +184,19 @@ public class IntelligentPlayer2 extends Player {
 	private int playout(Card startChoice, State startState,
 			ArrayList<Card>[] startHand) {
 		int points = 0;
+<<<<<<< Updated upstream
 		// System.out.println("-----------------------------------------------");
 
 		// System.out.println("player 2 playing out "+startChoice.toString());
 		//
 		// System.out.println("-----------------------------------------------");
+=======
+//		System.out.println("-----------------------------------------------");
+//
+//		System.out.println("player 2 playing out "+startChoice.toString());
+//
+//		System.out.println("-----------------------------------------------");
+>>>>>>> Stashed changes
 
 		// update hand - copy hand and remove played card
 		ArrayList<Card>[] currentHand = copyHand(startHand);
@@ -200,6 +208,7 @@ public class IntelligentPlayer2 extends Player {
 
 		// second we finish the trick
 		// we need to know where we are in the trick
+<<<<<<< Updated upstream
 		// System.out.println("-------current trick " +
 		// playoutState.cardsInTrick);
 		// System.out.println("-------cards remaining "
@@ -207,6 +216,13 @@ public class IntelligentPlayer2 extends Player {
 		// System.out.println(playoutState.deck.notPlayed);
 		// System.out.println("player 2 hand: ");
 		// printCopyHand(currentHand);
+=======
+//		System.out.println("-------current trick " + playoutState.cardsInTrick);
+//		System.out.println("-------cards remaining " +playoutState.deck.notPlayed.size()+"\n");
+//		System.out.println(playoutState.deck.notPlayed);
+//		System.out.println("player 2 hand: ");
+//		printCopyHand(currentHand);
+>>>>>>> Stashed changes
 
 		int playersLeftToPlay = 4 - playoutState.cardsInTrick.size();
 		int counter = 1;
@@ -235,6 +251,7 @@ public class IntelligentPlayer2 extends Player {
 		int trickNum = playoutState.deck.played.size() / 4 + 1;
 		for (int trick = trickNum; trick < 14; trick++) {
 			// clear trick info, new stuff possible source of error
+<<<<<<< Updated upstream
 			// System.out.println("\n---Starting trick " + trick +
 			// " playing out card "+ startChoice.toString());
 			// System.out.println("-------cards remaining "
@@ -253,6 +270,24 @@ public class IntelligentPlayer2 extends Player {
 
 			int startingPlayer = playoutState.winningPlayer();
 			// System.out.println("** Player "+startingPlayer+" is starting the next round.");
+=======
+//			System.out.println("\n---Starting trick " + trick + " playing out card "+ startChoice.toString());
+//			System.out.println("-------cards remaining " +playoutState.deck.notPlayed.size()+"\n");
+//			System.out.println(playoutState.deck.notPlayed);
+//			System.out.println("player 2 hand: ");
+//			printCopyHand(currentHand);
+
+//			if(playoutState.deck.notPlayed.size()%4 != 0){
+//				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+//				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+//				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+//				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+//			}
+			playoutState.clearTrick();
+
+			int startingPlayer = playoutState.winningPlayer();
+//			System.out.println("** Player "+startingPlayer+" is starting the next round.");
+>>>>>>> Stashed changes
 
 			// we run through all of our players
 			for (int player = startingPlayer; player < startingPlayer + 4; player++) {
@@ -267,11 +302,19 @@ public class IntelligentPlayer2 extends Player {
 				} else {
 					choice = playRandomCard(playoutState, currentHand);
 				}
+<<<<<<< Updated upstream
 				// System.out.println("-------Player "+currentPlayer+" played "+choice);
 				playoutState.updateState(choice, currentPlayer);
 			}
 
 			// System.out.println("-------** Player "+playoutState.currentWinner+" won the round.");
+=======
+//				System.out.println("-------Player "+currentPlayer+" played "+choice);
+				playoutState.updateState(choice, currentPlayer);
+			}
+
+//			System.out.println("-------** Player "+playoutState.currentWinner+" won the round.");
+>>>>>>> Stashed changes
 
 			if (this.playerID == playoutState.currentWinner) {
 				// if we won, then assign points
@@ -308,7 +351,11 @@ public class IntelligentPlayer2 extends Player {
 	private void remove(Card card, ArrayList<Card>[] recursiveHand) {
 		// remove card from hand
 		// printCopyHand(currentHand);
+<<<<<<< Updated upstream
 		// System.out.println("-------removing card----");
+=======
+//		System.out.println("-------removing card----");
+>>>>>>> Stashed changes
 		for (Card current : recursiveHand[card.suit]) {
 			if (current.rank == card.rank) {
 				recursiveHand[card.suit].remove(current);
