@@ -53,7 +53,7 @@ public class State {
 //		System.out.println("-----------------------");
 //
 //		System.out.println("\nRemoving from deck: " + played.toString());
-		System.out.println("----updating cards----");
+		System.out.println("-------updating cards----");
 
 		this.cardsInTrick.add(played);
 

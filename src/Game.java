@@ -30,8 +30,14 @@ public class Game {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
+			System.out.println("____________________________________________________________");
+			System.out.println("____________________________________________________________");
+			System.out.println("____________________________________________________________");
 			System.out.println("Trick number " + trick);
-			System.out.println(" ");
+			System.out.println("____________________________________________________________");
+			System.out.println("____________________________________________________________");
+			System.out.println("____________________________________________________________");
+
 
 			// create new state
 			ArrayList<Card> cardsInTrick = new ArrayList<Card>();
