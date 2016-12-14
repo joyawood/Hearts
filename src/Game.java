@@ -17,9 +17,6 @@ public class Game {
 	public void playRound() {
 		// setup round
 		setupRound();
-		System.out.println("Intelligent player hand:");
-		players[2].printHand();
-		System.out.println(" ");
 
 		// find starting player
 		int startingPlayer = 0;
