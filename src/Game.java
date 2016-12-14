@@ -8,7 +8,7 @@ public class Game {
 
 	public Game() {
 		players[0] = new NaivePlayer(0);
-		players[1] = new NaivePlayer(1);
+		players[1] = new IntelligentPlayer2(1);
 		players[2] = new IntelligentPlayer2(2);
 		players[3] = new RandomPlayer(3);
 		this.deck = new Deck();
@@ -30,14 +30,9 @@ public class Game {
 
 		// go through the 13 tricks of the round
 		for (int trick = 1; trick < 14; trick++) {
-			System.out.println("____________________________________________________________");
-			System.out.println("____________________________________________________________");
-			System.out.println("____________________________________________________________");
-			System.out.println("Trick number " + trick);
-			System.out.println("____________________________________________________________");
-			System.out.println("____________________________________________________________");
-			System.out.println("____________________________________________________________");
 
+			System.out.println("");
+			System.out.println("Trick number " + trick +":");
 
 			// create new state
 			ArrayList<Card> cardsInTrick = new ArrayList<Card>();
@@ -48,13 +43,9 @@ public class Game {
 				// get index of current player
 				int currentPlayer = player % 4;
 				// tell player to play
-				System.out.println("currently on player " + players[currentPlayer].playerID);
 
 				Card choice = players[currentPlayer].playCard(currentState);
-				System.out.println("player " + currentPlayer + " played " + choice.toString());
-				System.out.println(" ");
-				System.out.println(" ");
-
+				System.out.println("Player " + currentPlayer + " played " + choice.toString()+".");
 				currentState.updateState(choice, currentPlayer);//look at this
 
 			}
@@ -63,6 +54,7 @@ public class Game {
 			startingPlayer = currentState.winningPlayer();
 			// update points for starting player (who just won last round)
 			players[startingPlayer].points += currentState.points;
+			System.out.println("* Player "+startingPlayer+" recieved "+currentState.points+" points.");
 			updateGame(currentState);
 		}
 

@@ -5,11 +5,11 @@ public class Deck {
 	int length = 52;
 	ArrayList<Card> played;
 	ArrayList<Card> notPlayed;
-	
+
 
 	public Deck() {
 		cards = new Card[52];
-		
+
 		int index = 0;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 2; j < 15; j++) {
@@ -18,7 +18,7 @@ public class Deck {
 				index++;
 			}
 		}
-		
+
 		shuffle();
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
@@ -31,7 +31,7 @@ public class Deck {
 	public Deck(Deck toCopy) {
 		// makes a deep copy of the passed in deck object
 		cards = new Card[52];
-		
+
 		int index = 0;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 2; j < 15; j++) {
@@ -40,7 +40,7 @@ public class Deck {
 				index++;
 			}
 		}
-		
+
 		played = new ArrayList<Card>();
 		notPlayed = new ArrayList<Card>();
 
@@ -83,7 +83,7 @@ public class Deck {
 	}
 
 	public void updatePlayed(Card current) {
-		
+
 		for (Card card : notPlayed) {
 			if (card.equals(current)) {
 				notPlayed.remove(card);

@@ -13,8 +13,6 @@ public class IntelligentPlayer2 extends Player {
 		return playCard(currentState, this.hand);
 	}
 
-
-
 	public Card playCard(State currentState, ArrayList<Card>[] recursiveHand) {
 		// this is baseline worst score to compare against card options
 		int bestScore = 27;
@@ -32,53 +30,57 @@ public class IntelligentPlayer2 extends Player {
 			currentState.twoOfClubs = true;
 			choice = new Card(2, 2);
 		} else if (leadingSuit == -1) {
+
+			ArrayList<Card> orderedCards = order(currentState, recursiveHand);
+
 			if (currentState.heartsBroken) {
+
 				// if you're leading
 				// if hearts broken
-				for (int suit = 0; suit < 4; suit++) {
-					for (Card valid : currentHand[suit]) {
-						int score = playout(valid, currentState, currentHand);
-//						System.out.println("Playout of " + valid.toString() + " yields "+ score + " points " );
-						if (score < bestScore) {
-							choice = valid;
-							bestScore = score;
-						}
-					}
-				}
-			} else {
-				// if you're leading
-				// if not hearts broken
-				for (int suit = 1; suit < 4; suit++) {
-					for (Card valid : currentHand[suit]) {
-						int score = playout(valid, currentState, currentHand);
-//						System.out.println("Playout of " + valid.toString() + " yields "+ score + " points " );
-						if (score < bestScore) {
-							choice = valid;
-							bestScore = score;
-						}
-					}
-				}
-			}
 
-		} else if (isVoid(leadingSuit, currentHand)) {
-			// we are void in suit, play any suit
-			for (int suit = 0; suit < 4; suit++) {
-				for (Card valid : currentHand[suit]) {
+				// for (int suit = 0; suit < 4; suit++) {
+				for (Card valid : orderedCards) {
 					int score = playout(valid, currentState, currentHand);
-//					System.out.println("Playout of " + valid.toString() + " yields "+ score + " points " );
+					// System.out.println("Playout of " + valid.toString() +
+					// " yields "+ score + " points " );
 					if (score < bestScore) {
 						choice = valid;
 						bestScore = score;
-
 					}
 				}
+				// }
+			} else {
+				// if you're leading
+				// if not hearts broken
+				// for (int suit = 1; suit < 4; suit++) {
+				for (Card valid : orderedCards) {
+					int score = playout(valid, currentState, currentHand);
+					// System.out.println("Playout of " + valid.toString() +
+					// " yields "+ score + " points " );
+					if (score < bestScore) {
+						choice = valid;
+						bestScore = score;
+					}
+				}
+				// }
+			}
+
+		} else if (isVoid(leadingSuit, currentHand)) {
+			if (hasQueen(recursiveHand)) {
+				// if queen drop queen
+				choice = new Card(12, 3);
+			} else if (recursiveHand[0].size() > 0) {
+				// if hearts, drop highest heart
+				choice = recursiveHand[0].get(recursiveHand[0].size() - 1);
+			} else {
+				choice = voidAttempt(recursiveHand);
+				// choice = playHighestNonHeartCard(recursiveHand);
 			}
 		} else {
 			// not leading and not void - following in suit
 			// run through all valid cards - consider leading suit
 			for (Card valid : currentHand[leadingSuit]) {
 				int score = playout(valid, currentState, currentHand);
-//				System.out.println("Playout of " + valid.toString() + " yields "+ score + " points " );
 				if (score < bestScore) {
 					choice = valid;
 					bestScore = score;
@@ -89,16 +91,54 @@ public class IntelligentPlayer2 extends Player {
 		}
 		if (choice == null && hasOnlyHearts(currentHand)) {
 			choice = currentHand[0].get(0);
-//			System.out.println("We have only hearts, playing lowest " + choice.toString());
-
 		}
 		// remove from actual hand
-		remove(choice); 
+		remove(choice);
 		return choice;
 	}
 
+	private ArrayList<Card> order(State currentState,
+			ArrayList<Card>[] recursiveHand) {
+		ArrayList<Card> orderedHand = new ArrayList<Card>();
+		int[] lengths = new int[4];
+		for (int i = 0; i < 4; i++) {
+			lengths[i] = recursiveHand[i].size();
+		}
 
-	public Card playCardNaive(State currentState, ArrayList<Card>[] recursiveHand) {
+		int shortestSuit = 0;
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 4; i++) {
+				if (lengths[i] < lengths[shortestSuit]) {
+					shortestSuit = i;
+				}
+			}
+			lengths[shortestSuit] = 13;
+			for(Card inShortest: recursiveHand[shortestSuit]){
+				orderedHand.add(inShortest);
+			}
+		}
+		return orderedHand;
+	}
+
+	private Card voidAttempt(ArrayList<Card>[] recursiveHand) {
+		Card choice = null;
+
+		int suitLength = 13;
+		int suitIndex = 0;
+		for (int i = 0; i < 4; i++) {
+			if (recursiveHand[i].size() < suitLength
+					&& recursiveHand[i].size() > 0) {
+				suitLength = recursiveHand[i].size();
+				suitIndex = i;
+			}
+		}
+		choice = recursiveHand[suitIndex]
+				.get(recursiveHand[suitIndex].size() - 1);
+		return choice;
+	}
+
+	public Card playCardNaive(State currentState,
+			ArrayList<Card>[] recursiveHand) {
 		Card choice = null;
 		int leadingSuit = currentState.getLeadingSuit();
 
@@ -133,21 +173,22 @@ public class IntelligentPlayer2 extends Player {
 
 		if (choice == null && hasOnlyHearts(recursiveHand)) {
 			choice = recursiveHand[0].get(0);
-			System.out.println("We have only hearts, playing lowest " + choice.toString());
+			System.out.println("We have only hearts, playing lowest "
+					+ choice.toString());
 		}
-		
+
 		remove(choice, recursiveHand);
 		return choice;
 	}
 
-
-	private int playout(Card startChoice, State startState, ArrayList<Card>[] startHand) {
+	private int playout(Card startChoice, State startState,
+			ArrayList<Card>[] startHand) {
 		int points = 0;
-		System.out.println("-----------------------------------------------");
+		// System.out.println("-----------------------------------------------");
 
-		System.out.println("player 2 playing out "+startChoice.toString());
-
-		System.out.println("-----------------------------------------------");
+		// System.out.println("player 2 playing out "+startChoice.toString());
+		//
+		// System.out.println("-----------------------------------------------");
 
 		// update hand - copy hand and remove played card
 		ArrayList<Card>[] currentHand = copyHand(startHand);
@@ -159,16 +200,17 @@ public class IntelligentPlayer2 extends Player {
 
 		// second we finish the trick
 		// we need to know where we are in the trick
-		System.out.println("-------current trick " + playoutState.cardsInTrick);
-		System.out.println("-------cards remaining " +playoutState.deck.notPlayed.size()+"\n");
-		System.out.println(playoutState.deck.notPlayed);
-		System.out.println("player 2 hand: ");
-		printCopyHand(currentHand);
+		// System.out.println("-------current trick " +
+		// playoutState.cardsInTrick);
+		// System.out.println("-------cards remaining "
+		// +playoutState.deck.notPlayed.size()+"\n");
+		// System.out.println(playoutState.deck.notPlayed);
+		// System.out.println("player 2 hand: ");
+		// printCopyHand(currentHand);
 
 		int playersLeftToPlay = 4 - playoutState.cardsInTrick.size();
 		int counter = 1;
-//		System.out.println("playersLeftToPlay "+playersLeftToPlay +"\n");
-
+		// System.out.println("playersLeftToPlay "+playersLeftToPlay +"\n");
 
 		// for each player left to player:
 		while (playersLeftToPlay > 0) {
@@ -193,13 +235,15 @@ public class IntelligentPlayer2 extends Player {
 		int trickNum = playoutState.deck.played.size() / 4 + 1;
 		for (int trick = trickNum; trick < 14; trick++) {
 			// clear trick info, new stuff possible source of error
-			System.out.println("\n---Starting trick " + trick + " playing out card "+ startChoice.toString());
-			System.out.println("-------cards remaining " +playoutState.deck.notPlayed.size()+"\n");
-			System.out.println(playoutState.deck.notPlayed);
-			System.out.println("player 2 hand: ");
-			printCopyHand(currentHand);
+			// System.out.println("\n---Starting trick " + trick +
+			// " playing out card "+ startChoice.toString());
+			// System.out.println("-------cards remaining "
+			// +playoutState.deck.notPlayed.size()+"\n");
+			// System.out.println(playoutState.deck.notPlayed);
+			// System.out.println("player 2 hand: ");
+			// printCopyHand(currentHand);
 
-			if(playoutState.deck.notPlayed.size()%4 != 0){
+			if (playoutState.deck.notPlayed.size() % 4 != 0) {
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
@@ -208,9 +252,8 @@ public class IntelligentPlayer2 extends Player {
 			playoutState.clearTrick();
 
 			int startingPlayer = playoutState.winningPlayer();
-			System.out.println("** Player "+startingPlayer+" is starting the next round.");
+			// System.out.println("** Player "+startingPlayer+" is starting the next round.");
 
-			
 			// we run through all of our players
 			for (int player = startingPlayer; player < startingPlayer + 4; player++) {
 				Card choice = null;
@@ -224,11 +267,11 @@ public class IntelligentPlayer2 extends Player {
 				} else {
 					choice = playRandomCard(playoutState, currentHand);
 				}
-				System.out.println("-------Player "+currentPlayer+" played "+choice);
+				// System.out.println("-------Player "+currentPlayer+" played "+choice);
 				playoutState.updateState(choice, currentPlayer);
 			}
 
-			System.out.println("-------** Player "+playoutState.currentWinner+" won the round.");
+			// System.out.println("-------** Player "+playoutState.currentWinner+" won the round.");
 
 			if (this.playerID == playoutState.currentWinner) {
 				// if we won, then assign points
@@ -265,7 +308,7 @@ public class IntelligentPlayer2 extends Player {
 	private void remove(Card card, ArrayList<Card>[] recursiveHand) {
 		// remove card from hand
 		// printCopyHand(currentHand);
-		System.out.println("-------removing card----");
+		// System.out.println("-------removing card----");
 		for (Card current : recursiveHand[card.suit]) {
 			if (current.rank == card.rank) {
 				recursiveHand[card.suit].remove(current);
@@ -309,8 +352,6 @@ public class IntelligentPlayer2 extends Player {
 		return lowest;
 	}
 
-
-
 	private ArrayList<Card>[] copyHand(ArrayList<Card>[] startHand) {
 		ArrayList<Card>[] newHand = new ArrayList[4];
 
@@ -330,12 +371,12 @@ public class IntelligentPlayer2 extends Player {
 		 * Method to return a random unplayed card that is not in the
 		 * IntelligentPlayer's hand
 		 */
-//		System.out.println("playing Random card, ignoring card in  ");
-//		this.printCopyHand(playerHand);
+		// System.out.println("playing Random card, ignoring card in  ");
+		// this.printCopyHand(playerHand);
 
 		boolean valid = false;
 		Card choice = null;
-//		System.out.println("\n" + state.deck.notPlayed.size());
+		// System.out.println("\n" + state.deck.notPlayed.size());
 
 		while (!valid) {
 			int index = rand.nextInt(state.deck.notPlayed.size());
@@ -346,9 +387,8 @@ public class IntelligentPlayer2 extends Player {
 				valid = true;
 			}
 		}
-//		System.out.println("random card chosen " + choice.toString()+"\n");
+		// System.out.println("random card chosen " + choice.toString()+"\n");
 
-		
 		return choice;
 	}
 
@@ -357,20 +397,21 @@ public class IntelligentPlayer2 extends Player {
 		 * Used in choosing random card - verify that not in intelligent player
 		 * hand
 		 */
-			for (Card mine : ourHand[card.suit]) {
-				if (mine.rank == card.rank) {
-					return true;
-				}
+		for (Card mine : ourHand[card.suit]) {
+			if (mine.rank == card.rank) {
+				return true;
+			}
 		}
 		return false;
 
 	}
+
 	public void printCopyHand(ArrayList<Card>[] currentHand) {
 
 		for (ArrayList<Card> suit : currentHand) {
-			 for (Object card : suit) {
-			 System.out.print(card.toString()+", ");
-			 }
+			for (Object card : suit) {
+				System.out.print(card.toString() + ", ");
+			}
 		}
 		System.out.println("done printing Player 2 hand");
 

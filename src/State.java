@@ -35,7 +35,7 @@ public class State {
 		this.twoOfClubs = stateToCopy.twoOfClubs;
 		this.cardsInTrick = new ArrayList<Card>(stateToCopy.cardsInTrick);
 	}
-	
+
 	public void clearTrick(){
 		this.cardsInTrick = new ArrayList<Card>();
 		this.winningCard = new Card(2, 2);
@@ -53,7 +53,7 @@ public class State {
 //		System.out.println("-----------------------");
 //
 //		System.out.println("\nRemoving from deck: " + played.toString());
-		System.out.println("-------updating cards----");
+//		System.out.println("-------updating cards----");
 
 		this.cardsInTrick.add(played);
 
@@ -80,10 +80,10 @@ public class State {
 
 		}
 
-		
+
 		// update our copy of the deck to reflect the change
 		this.deck.updatePlayed(played);
-		
+
 		if (played.suit == 0) {
 			// break hearts
 			this.heartsBroken = true;
@@ -104,24 +104,24 @@ public class State {
 	public int winningPlayer() {
 		return currentWinner;
 	}
-	
+
 //	public int advance(Card card, ArrayList<Card>[] playoutHand){
 //		int points = 0;
 //		//check round
 //		update(card, currentPlayer);//?
-//		
+//
 //		while(validTrick()){
 //			Card choice = playRandomCard(playoutHand);
 //			currentPlayer++;
 //			update(choice, currentPlayer);
 //		}
-//		
-//		
-//		
+//
+//
+//
 //		return points;
 //	}
-//	
-	
+//
+
 	public int getLeadingSuit() {
 		if (this.cardsInTrick.size() != 0) {
 			return this.cardsInTrick.get(0).suit;
@@ -129,15 +129,15 @@ public class State {
 			return -1;
 		}
 	}
-	
+
 //	public boolean roundsRemaining() {
 //		return this.deck.played.size() > 0;
 //	}
-	
+
 	public boolean validTrick() {
 		return cardsInTrick.size()<4;
 	}
-	
+
 
 
 	private Card playRandomCard(ArrayList<Card>[] currentHand) {
@@ -171,7 +171,7 @@ public class State {
 		return false;
 
 	}
-	
+
 	public void printState(){
 		System.out.println("Printing State.");
 //		System.out.println("hearts broken: "+ heartsBroken);
